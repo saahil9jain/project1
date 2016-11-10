@@ -173,10 +173,10 @@ def index():
     #
     return render_template("index.html", **context)
 
-@app.route('/artists/')
+@app.route('/artist_lookup/')
 def artist_lookup():
 
-        # list all artists
+    # list all artists
     cursor = g.conn.execute("SELECT artist_id, artist_name FROM artist")
     artists = []
     for result in cursor:
@@ -185,6 +185,32 @@ def artist_lookup():
 
     context = dict(data = artists)
     return render_template("artist_lookup.html", **context)
+
+@app.route('/album_lookup/')
+def album_lookup():
+
+    # list all artists
+    cursor = g.conn.execute("SELECT album_id, album_title, release_date, company_id FROM album_releasedby")
+    albums = []
+    for result in cursor:
+        albums.append("%s: %s, released %s by company %s" % (result[0], result[1], result[2], result[3]))
+    cursor.close()
+
+    context = dict(data = albums)
+    return render_template("album_lookup.html", **context)
+
+@app.route('/track_lookup/')
+def track_lookup():
+
+    # list all artists
+    cursor = g.conn.execute("SELECT track_num, track_title, duration_secs FROM track_contains")
+    tracks = []
+    for result in cursor:
+        tracks.append("%s: %s %s" % (result[0], result[1], result[2]))
+    cursor.close()
+
+    context = dict(data = tracks)
+    return render_template("track_lookup.html", **context)
 
 #
 # This is an example of a different path.  You can see it at
