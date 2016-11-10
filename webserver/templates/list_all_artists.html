@@ -15,12 +15,12 @@ body{
             tracks of music!~~~~<br>
             <br><hr>
             Browse by:<br>
-            <a href="/artist_lookup/">Artist</a>
-            <a href="/album_lookup/">Album</a>
-            <a href="/track_lookup/">Track</a>
+            <a href="/list_all_artists/">Artist</a>
+            <a href="/list_all_albums/">Album</a>
+            <a href="/list_all_tracks/">Track</a>
         </center>
         <br>
-        <b>Tracks</b>
+        <b>Artists</b>
 
         <div>
             {% for n in data %}
@@ -32,7 +32,7 @@ body{
             <p>Name of new computer scientist: <input type="text" name="name"> <input type="submit" value="Add"></p>
         </form>
 
-        <form method="GET" action="/track_lookup">
+        <form method="GET" action="/artist_lookup">
         </form>
     </body>
 </html>

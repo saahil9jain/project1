@@ -145,8 +145,8 @@ def index():
     # for example, the below file reads template/index.html
     return render_template("index.html", **context)
 
-@app.route('/artist_lookup/')
-def artist_lookup():
+@app.route('/list_all_artists/')
+def list_all_artists():
 
     # list all artists
     cursor = g.conn.execute(LIST_ARTISTS)
@@ -162,10 +162,10 @@ def artist_lookup():
     cursor.close()
 
     context = dict(data = artists, counter=trackCount)
-    return render_template("artist_lookup.html", **context)
+    return render_template("list_all_artists.html", **context)
 
-@app.route('/album_lookup/')
-def album_lookup():
+@app.route('/list_all_albums/')
+def list_all_albums():
 
     cursor = g.conn.execute(LIST_ALBUMS)
     albums = []
@@ -180,10 +180,10 @@ def album_lookup():
     cursor.close()
 
     context = dict(data = albums, counter=trackCount)
-    return render_template("album_lookup.html", **context)
+    return render_template("list_all_albums.html", **context)
 
-@app.route('/track_lookup/')
-def track_lookup():
+@app.route('/list_all_tracks/')
+def list_all_tracks():
 
     cursor = g.conn.execute(LIST_TRACKS)
     tracks = []
@@ -198,7 +198,7 @@ def track_lookup():
     cursor.close()
 
     context = dict(data = tracks, counter=trackCount)
-    return render_template("track_lookup.html", **context)
+    return render_template("list_all_tracks.html", **context)
 
 #
 # This is an example of a different path.  You can see it at
