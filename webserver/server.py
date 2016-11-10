@@ -128,18 +128,17 @@ def index():
     """
 
     # DEBUG: this is debugging code to see what request looks like
-    print request.args
+    #print request.args
 
-    #
-    # example of a database query
-    #
-    cursor = g.conn.execute("SELECT name FROM test")
-    names = []
+    cursor = g.conn.execute(
+            "SELECT COUNT (*) "
+            "FROM track_contains"
+            )
+    trackCount = []
     for result in cursor:
-        names.append(result['name'])  # can also be accessed using result[0]
+        trackCount.append("%s" % (result[0]))
     cursor.close()
 
-    #
     # Flask uses Jinja templates, which is an extension to HTML where you can
     # pass data to a template and dynamically generate HTML based on the data
     # (you can think of it as simple PHP)
@@ -164,13 +163,10 @@ def index():
     #     {% for n in data %}
     #     <div>{{n}}</div>
     #     {% endfor %}
-    #
-    context = dict(data = names)
+    context = dict(data = trackCount)
 
-    #
     # render_template looks in the templates/ folder for files.
     # for example, the below file reads template/index.html
-    #
     return render_template("index.html", **context)
 
 @app.route('/artist_lookup/')
