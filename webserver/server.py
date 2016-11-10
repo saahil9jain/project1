@@ -163,7 +163,7 @@ def index():
     #     {% for n in data %}
     #     <div>{{n}}</div>
     #     {% endfor %}
-    context = dict(data = trackCount)
+    context = dict(counter = trackCount)
 
     # render_template looks in the templates/ folder for files.
     # for example, the below file reads template/index.html
@@ -181,8 +181,17 @@ def artist_lookup():
     for result in cursor:
         artists.append("%s: [%s]" % (result[0], result[1]))
     cursor.close()
+    
+    cursor = g.conn.execute(
+            "SELECT COUNT (*) "
+            "FROM track_contains"
+            )
+    trackCount = []
+    for result in cursor:
+        trackCount.append("%s" % (result[0]))
+    cursor.close()
 
-    context = dict(data = artists)
+    context = dict(data = artists, counter=trackCount)
     return render_template("artist_lookup.html", **context)
 
 @app.route('/album_lookup/')
@@ -199,7 +208,16 @@ def album_lookup():
         albums.append("%s: [%s], released by [%s] and [%s] on %s" % (result[0], result[1], result[2], result[3], result[4]))
     cursor.close()
 
-    context = dict(data = albums)
+    cursor = g.conn.execute(
+            "SELECT COUNT (*) "
+            "FROM track_contains"
+            )
+    trackCount = []
+    for result in cursor:
+        trackCount.append("%s" % (result[0]))
+    cursor.close()
+
+    context = dict(data = albums, counter=trackCount)
     return render_template("album_lookup.html", **context)
 
 @app.route('/track_lookup/')
@@ -217,7 +235,16 @@ def track_lookup():
         tracks.append("\"%s\": track %s on [%s], by [%s]" % (result[0], result[1], result[2], result[3]))
     cursor.close()
 
-    context = dict(data = tracks)
+    cursor = g.conn.execute(
+            "SELECT COUNT (*) "
+            "FROM track_contains"
+            )
+    trackCount = []
+    for result in cursor:
+        trackCount.append("%s" % (result[0]))
+    cursor.close()
+
+    context = dict(data = tracks, counter=trackCount)
     return render_template("track_lookup.html", **context)
 
 #

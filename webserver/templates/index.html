@@ -9,20 +9,16 @@ body{
     <body>
         <center>
             <h1>Welcome to Greg and Saahil's CD Collection</h1>
-
+            ~~~~Now containing
+            {% for n in counter %}
+            <b>{{n}}</b>
+            {% endfor %}
+            tracks of music!~~~~<br>
+            <br><hr>
             Browse by:<br>
             <a href="/artist_lookup/">Artist</a>
             <a href="/album_lookup/">Album</a>
             <a href="/track_lookup/">Track</a>
-        </center>
-
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-        <center>
-            ~~~~Now containing
-            {% for n in data %}
-            <b>{{n}}</b>
-            {% endfor %}
-            tracks of music!~~~~
         </center>
     </body>
 </html>
