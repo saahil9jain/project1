@@ -1,0 +1,23 @@
+<html>
+  <style>
+    body{ 
+      font-size: 15pt;
+      font-family: Times New Roman;
+    }
+  </style>
+
+<body>
+  <h1>Artists</h1>
+
+  <div>
+    {% for n in data %}
+    <div>{{n}}</div>
+    {% endfor %}
+  </div>
+
+<form method="GET" action="/artist">
+</form>
+
+</body>
+</html>
+

@@ -1,5 +1,4 @@
 #!/usr/bin/env python2.7
-
 """
 Columbia W4111 Intro to databases
 Example webserver
@@ -131,7 +130,6 @@ def index():
   # DEBUG: this is debugging code to see what request looks like
   print request.args
 
-
   #
   # example of a database query
   #
@@ -169,12 +167,24 @@ def index():
   #
   context = dict(data = names)
 
-
   #
   # render_template looks in the templates/ folder for files.
   # for example, the below file reads template/index.html
   #
   return render_template("index.html", **context)
+
+@app.route('/artists/')
+def artist_lookup():
+
+    # list all artists
+  cursor = g.conn.execute("SELECT artist_id, artist_name FROM artist")
+  artists = []
+  for result in cursor:
+      artists.append("%s: %s" % (result[0], result[1]))
+  cursor.close()
+
+  context = dict(data = artists)
+  return render_template("artist_lookup.html", **context)
 
 #
 # This is an example of a different path.  You can see it at
