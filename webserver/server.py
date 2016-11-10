@@ -177,10 +177,13 @@ def index():
 def artist_lookup():
 
     # list all artists
-    cursor = g.conn.execute("SELECT artist_id, artist_name FROM artist")
+    cursor = g.conn.execute(
+            "SELECT artist_id, artist_name "
+            "FROM artist"
+            )
     artists = []
     for result in cursor:
-        artists.append("%s: %s" % (result[0], result[1]))
+        artists.append("%s: [%s]" % (result[0], result[1]))
     cursor.close()
 
     context = dict(data = artists)
@@ -190,10 +193,14 @@ def artist_lookup():
 def album_lookup():
 
     # list all artists
-    cursor = g.conn.execute("SELECT album_id, album_title, release_date, company_id FROM album_releasedby")
+    cursor = g.conn.execute(
+            "SELECT A.album_id, A.album_title, A2.artist_name, R.company_name, A.release_date "
+            "FROM album_releasedby as A, artist as A2, recordcompany as R "
+            "WHERE A.company_id=R.company_id AND A.artist_id=A2.artist_id"
+            )
     albums = []
     for result in cursor:
-        albums.append("%s: %s, released %s by company %s" % (result[0], result[1], result[2], result[3]))
+        albums.append("%s: [%s], released by [%s] and [%s] on %s" % (result[0], result[1], result[2], result[3], result[4]))
     cursor.close()
 
     context = dict(data = albums)
@@ -203,10 +210,15 @@ def album_lookup():
 def track_lookup():
 
     # list all artists
-    cursor = g.conn.execute("SELECT track_num, track_title, duration_secs FROM track_contains")
+    cursor = g.conn.execute(
+            "SELECT T.track_title, T.track_num, A.album_title, A2.artist_name "
+            "FROM track_contains as T, album_releasedby as A, artist as A2 "
+            "WHERE T.album_id=A.album_id AND A.artist_id=A2.artist_id "
+            "ORDER BY T.track_title"
+            )
     tracks = []
     for result in cursor:
-        tracks.append("%s: %s %s" % (result[0], result[1], result[2]))
+        tracks.append("\"%s\": track %s on [%s], by [%s]" % (result[0], result[1], result[2], result[3]))
     cursor.close()
 
     context = dict(data = tracks)
