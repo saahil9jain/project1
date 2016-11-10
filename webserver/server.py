@@ -1,14 +1,13 @@
 #!/usr/bin/env python2.7
+
 """
 Columbia W4111 Intro to databases
 Example webserver
 
 To run locally
-
     python server.py
 
 Go to http://localhost:8111 in your browser
-
 
 A debugger such as "pdb" may be helpful for debugging.
 Read about it online.
@@ -18,61 +17,45 @@ import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response
+from cd_collection_queries import *
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 
-
-#
 # The following uses the postgresql test.db -- you can use this for debugging purposes
 # However for the project you will need to connect to your Part 2 database in order to use the
 # data
 #
 # XXX: The URI should be in the format of:
-#
 #     postgresql://USER:PASSWORD@<IP_OF_POSTGRE_SQL_SERVER>/postgres
 #
 # For example, if you had username ewu2493, password foobar, then the following line would be:
-#
 #     DATABASEURI = "postgresql://ewu2493:foobar@<IP_OF_POSTGRE_SQL_SERVER>/postgres"
 #
 # Swap out the URI below with the URI for the database created in part 2
 # DATABASEURI = "sqlite:///test.db"
 DATABASEURI = "postgresql://sj2675:huw2z@104.196.175.120/postgres"
 
-
-#
 # This line creates a database engine that knows how to connect to the URI above
-#
 engine = create_engine(DATABASEURI)
 
-
-#
 # START SQLITE SETUP CODE
-#
 # after these statements run, you should see a file test.db in your webserver/ directory
 # this is a sqlite database that you can query like psql typing in the shell command line:
-#
 #     sqlite3 test.db
 #
 # The following sqlite3 commands may be useful:
-#
 #     .tables               -- will list the tables in the database
 #     .schema <tablename>   -- print CREATE TABLE statement for table
 #
 # The setup code should be deleted once you switch to using the Part 2 postgresql database
-#
 engine.execute("""DROP TABLE IF EXISTS test;""")
 engine.execute("""CREATE TABLE IF NOT EXISTS test (
   id serial,
   name text
 );""")
 engine.execute("""INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'), ('ada lovelace');""")
-#
 # END SQLITE SETUP CODE
-#
-
-
 
 @app.before_request
 def before_request():
@@ -101,20 +84,16 @@ def teardown_request(exception):
     except Exception as e:
         pass
 
-
-#
 # @app.route is a decorator around index() that means:
 #   run index() whenever the user tries to access the "/" path using a GET request
 #
 # If you wanted the user to go to e.g., localhost:8111/foobar/ with POST or GET then you could use
-#
 #       @app.route("/foobar/", methods=["POST", "GET"])
 #
 # PROTIP: (the trailing / in the path is important)
 #
 # see for routing: http://flask.pocoo.org/docs/0.10/quickstart/#routing
 # see for decorators: http://simeonfranklin.com/blog/2012/jul/1/python-decorators-in-12-steps/
-#
 @app.route('/')
 def index():
     """
@@ -130,10 +109,7 @@ def index():
     # DEBUG: this is debugging code to see what request looks like
     #print request.args
 
-    cursor = g.conn.execute(
-            "SELECT COUNT (*) "
-            "FROM track_contains"
-            )
+    cursor = g.conn.execute(COUNT_TRACKS)
     trackCount = []
     for result in cursor:
         trackCount.append("%s" % (result[0]))
@@ -173,19 +149,13 @@ def index():
 def artist_lookup():
 
     # list all artists
-    cursor = g.conn.execute(
-            "SELECT artist_id, artist_name "
-            "FROM artist"
-            )
+    cursor = g.conn.execute(LIST_ARTISTS)
     artists = []
     for result in cursor:
         artists.append("%s: [%s]" % (result[0], result[1]))
     cursor.close()
-    
-    cursor = g.conn.execute(
-            "SELECT COUNT (*) "
-            "FROM track_contains"
-            )
+
+    cursor = g.conn.execute(COUNT_TRACKS)
     trackCount = []
     for result in cursor:
         trackCount.append("%s" % (result[0]))
@@ -197,21 +167,13 @@ def artist_lookup():
 @app.route('/album_lookup/')
 def album_lookup():
 
-    # list all artists
-    cursor = g.conn.execute(
-            "SELECT A.album_id, A.album_title, A2.artist_name, R.company_name, A.release_date "
-            "FROM album_releasedby as A, artist as A2, recordcompany as R "
-            "WHERE A.company_id=R.company_id AND A.artist_id=A2.artist_id"
-            )
+    cursor = g.conn.execute(LIST_ALBUMS)
     albums = []
     for result in cursor:
         albums.append("%s: [%s], released by [%s] and [%s] on %s" % (result[0], result[1], result[2], result[3], result[4]))
     cursor.close()
 
-    cursor = g.conn.execute(
-            "SELECT COUNT (*) "
-            "FROM track_contains"
-            )
+    cursor = g.conn.execute(COUNT_TRACKS)
     trackCount = []
     for result in cursor:
         trackCount.append("%s" % (result[0]))
@@ -223,22 +185,13 @@ def album_lookup():
 @app.route('/track_lookup/')
 def track_lookup():
 
-    # list all artists
-    cursor = g.conn.execute(
-            "SELECT T.track_title, T.track_num, A.album_title, A2.artist_name "
-            "FROM track_contains as T, album_releasedby as A, artist as A2 "
-            "WHERE T.album_id=A.album_id AND A.artist_id=A2.artist_id "
-            "ORDER BY T.track_title"
-            )
+    cursor = g.conn.execute(LIST_TRACKS)
     tracks = []
     for result in cursor:
         tracks.append("\"%s\": track %s on [%s], by [%s]" % (result[0], result[1], result[2], result[3]))
     cursor.close()
 
-    cursor = g.conn.execute(
-            "SELECT COUNT (*) "
-            "FROM track_contains"
-            )
+    cursor = g.conn.execute(COUNT_TRACKS)
     trackCount = []
     for result in cursor:
         trackCount.append("%s" % (result[0]))
@@ -288,18 +241,15 @@ if __name__ == "__main__":
         """
         This function handles command line parameters.
         Run the server using
-
             python server.py
 
         Show the help text using
-
             python server.py --help
-
         """
 
         HOST, PORT = host, port
         print "running on %s:%d" % (HOST, PORT)
         app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
 
-
     run()
+
