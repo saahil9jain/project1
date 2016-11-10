@@ -5,15 +5,27 @@ body{
     font-family: Courier;
 }
     </style>
-
     <body>
-        <h1>Tracks</h1>
+        <center>
+            <h1>Welcome to Greg and Saahil's CD Collection</h1>
+
+            Browse by:<br>
+            <a href="/artist_lookup/">Artist</a>
+            <a href="/album_lookup/">Album</a>
+            <a href="/track_lookup/">Track</a>
+        </center>
+        <br>
+        <b>Tracks</b>
 
         <div>
             {% for n in data %}
             <div>{{n}}</div>
             {% endfor %}
         </div>
+
+        <form method="POST" action="/add">
+            <p>Name of new computer scientist: <input type="text" name="name"> <input type="submit" value="Add"></p>
+        </form>
 
         <form method="GET" action="/track_lookup">
         </form>
