@@ -212,7 +212,6 @@ def list_all_tracks():
 def another():
     return render_template("anotherfile.html")
 
-
 # Example of adding new data to the database
 @app.route('/add', methods=['POST'])
 def add():
@@ -222,6 +221,31 @@ def add():
     g.conn.execute(text(cmd), name1 = name, name2 = name);
     return redirect('/')
 
+@app.route('/list_albums_given_artist', methods=['POST'])
+def list_albums_given_artist():
+
+    artist_id = request.form['artist_id']
+
+    cursor = g.conn.execute(COUNT_TRACKS)
+    trackCount = []
+    for result in cursor:
+        trackCount.append("%s" % (result[0]))
+    cursor.close()
+
+    cursor = g.conn.execute(text(GET_ARTIST_NAME_BY_ARTIST_ID), artist_id=artist_id)
+    artist_name = []
+    for result in cursor:
+        artist_name.append("%s" % (result[0]))
+    cursor.close()
+
+    cursor = g.conn.execute(text(LIST_ALBUMS_GIVEN_ARTIST), artist_id=artist_id)
+    albums = []
+    for result in cursor:
+        albums.append("%s: [%s], released by [%s] on %s" % (result[0], result[1], result[2], result[3]))
+    cursor.close()
+
+    context = dict(counter=trackCount, artist_name=artist_name, data=albums)
+    return render_template("list_albums_given_artist.html", **context)
 
 @app.route('/login')
 def login():

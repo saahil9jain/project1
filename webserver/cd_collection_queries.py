@@ -27,3 +27,15 @@ LIST_TRACKS = (
         "ORDER BY T.track_title"
         )
 
+LIST_ALBUMS_GIVEN_ARTIST = (
+        "SELECT A.album_id, A.album_title, R.company_name, A.release_date "
+        "FROM album_releasedby AS A, recordcompany as R "
+        "WHERE A.artist_id = (:artist_id) AND A.company_id=R.company_id"
+        )
+
+GET_ARTIST_NAME_BY_ARTIST_ID = (
+        "SELECT A.artist_name "
+        "FROM artist as A "
+        "WHERE A.artist_id=(:artist_id)"
+        )
+
