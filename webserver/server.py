@@ -110,10 +110,7 @@ def index():
     #print request.args
 
     cursor = g.conn.execute(COUNT_TRACKS)
-    trackCount = []
-    for result in cursor:
-        trackCount.append("%s" % (result[0]))
-    cursor.close()
+    trackCount = (cursor.first()[0])
 
     # Flask uses Jinja templates, which is an extension to HTML where you can
     # pass data to a template and dynamically generate HTML based on the data
@@ -156,10 +153,7 @@ def list_all_artists():
     cursor.close()
 
     cursor = g.conn.execute(COUNT_TRACKS)
-    trackCount = []
-    for result in cursor:
-        trackCount.append("%s" % (result[0]))
-    cursor.close()
+    trackCount = (cursor.first()[0])
 
     context = dict(data = artists, counter=trackCount)
     return render_template("list_all_artists.html", **context)
@@ -174,10 +168,7 @@ def list_all_albums():
     cursor.close()
 
     cursor = g.conn.execute(COUNT_TRACKS)
-    trackCount = []
-    for result in cursor:
-        trackCount.append("%s" % (result[0]))
-    cursor.close()
+    trackCount = (cursor.first()[0])
 
     context = dict(data = albums, counter=trackCount)
     return render_template("list_all_albums.html", **context)
@@ -192,10 +183,7 @@ def list_all_tracks():
     cursor.close()
 
     cursor = g.conn.execute(COUNT_TRACKS)
-    trackCount = []
-    for result in cursor:
-        trackCount.append("%s" % (result[0]))
-    cursor.close()
+    trackCount = (cursor.first()[0])
 
     context = dict(data = tracks, counter=trackCount)
     return render_template("list_all_tracks.html", **context)
@@ -227,10 +215,7 @@ def list_albums_given_artist():
     artist_id = request.form['artist_id']
 
     cursor = g.conn.execute(COUNT_TRACKS)
-    trackCount = []
-    for result in cursor:
-        trackCount.append("%s" % (result[0]))
-    cursor.close()
+    trackCount = (cursor.first()[0])
 
     cursor = g.conn.execute(text(GET_ARTIST_NAME_BY_ARTIST_ID), artist_id=artist_id)
     artist_name = []
