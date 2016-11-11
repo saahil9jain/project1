@@ -26,11 +26,8 @@ body{
             {% endfor %}
         </div>
 
-        <form method="POST" action="/add">
-            <p>Name of new computer scientist: <input type="text" name="name"> <input type="submit" value="Add"></p>
-        </form>
-
-        <form method="GET" action="/album_lookup">
+        <form method="POST" action="/list_tracks_given_album_id">
+            <p>View tracks on album (enter album number) <input type="text" name="album_id"> <input type="submit" value="Go"></p>
         </form>
     </body>
 </html>
