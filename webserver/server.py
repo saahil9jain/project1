@@ -232,6 +232,26 @@ def list_albums_given_artist():
     context = dict(counter=trackCount, artist_name=artist_name, data=albums)
     return render_template("list_albums_given_artist.html", **context)
 
+@app.route('/list_tracks_given_album_id', methods=['POST'])
+def list_tracks_given_album_id():
+
+    album_id = request.form['album_id']
+
+    cursor = g.conn.execute(COUNT_TRACKS)
+    trackCount = (cursor.first()[0])
+
+    cursor = g.conn.execute(text(GET_ALBUM_NAME_GIVEN_ID), album_id=album_id)
+    album_title = cursor.first()[0]
+
+    cursor = g.conn.execute(text(LIST_TRACKS_GIVEN_ALBUM_ID), album_id=album_id)
+    tracks = []
+    for result in cursor:
+        tracks.append("Track %s: [%s]" % (result[0], result[1]))
+    cursor.close()
+
+    context = dict(counter=trackCount, album_title=album_title, data=tracks)
+    return render_template("list_tracks_given_album_id.html", **context)
+
 @app.route('/login')
 def login():
     abort(401)

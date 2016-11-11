@@ -39,3 +39,15 @@ GET_ARTIST_NAME_BY_ARTIST_ID = (
         "WHERE A.artist_id=(:artist_id)"
         )
 
+LIST_TRACKS_GIVEN_ALBUM_ID= (
+        "SELECT T.track_num, T.track_title "
+        "FROM track_contains as T "
+        "WHERE T.album_id=(:album_id) "
+        )
+
+GET_ALBUM_NAME_GIVEN_ID = (
+        "SELECT A.album_title "
+        "FROM album_releasedby as A "
+        "WHERE A.album_id=(:album_id)"
+        )
+
