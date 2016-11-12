@@ -19,11 +19,29 @@ body{
             <a href="/list_all_tracks/">Track</a>
             <a href="/list_all_recordcompanies/">Record Companies</a>
             <a href="/list_all_reviews/">Reviews</a>
-        <br><br><br><br><hr>
-        Contribute a rating to the collection:
-        <br><br><br><br><hr>
-        Contribute to the collection:
+
+
+            <br><br><br><br><hr>
+            Contribute a rating to the collection:
+
+
+            <br><br><br><br><hr>
+            Contribute to the collection:<br>
+            (may need to browse for necessary id's first)<br><br>
         </center>
+        <form method="POST" action="/insert_new_recordcompany">
+            Add record company<br>
+            --new <i>company_name </i><input type="text" name="company_name"><br>
+            <input type="submit" value="Add">
+        </form>
+
+        <form method="POST" action="/insert_new_artist">
+            Add new artist<br>
+            --new <i>artist_name </i><input type="text" name="artist_name"><br>
+            --existing <i>company_id </i><input type="text" name="company_id"><br>
+            <input type="submit" value="Add">
+        </form>
+
     </body>
 </html>
 
