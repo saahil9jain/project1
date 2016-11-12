@@ -20,8 +20,10 @@ body{
         <br>
         <b>
             Tracks on {{ album_title }}
-        </b>
-
+        </b><br>
+        "<i>track_title</i>": track <i>track_num</i> on [<i>artist_name</i>]'s album [<i>album_title</i>]<br>
+        ---Recording credit: [<i>artist_name</i>], [<i>role</i>], [<i>recording_location</i>], [<i>recording_date</i>]
+        <br><br>
         <div>
             {% for n in data %}
             <div>{{n}}</div>
