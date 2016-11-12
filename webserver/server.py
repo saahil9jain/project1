@@ -194,6 +194,23 @@ def list_all_tracks():
     context = dict(data = tracks, counter=trackCount)
     return render_template("list_all_tracks.html", **context)
 
+@app.route('/list_all_recordcompanies/')
+def list_all_recordcompanies():
+
+    # TODO: SAAHIL JAIN
+    # list all artists
+    cursor = g.conn.execute(LIST_ALL_ARTISTS)
+    artists = []
+    for result in cursor:
+        artists.append("#%s: [%s]" % (result[0], result[1]))
+    cursor.close()
+
+    cursor = g.conn.execute(COUNT_TRACKS)
+    trackCount = (cursor.first()[0])
+
+    context = dict(data = artists, counter=trackCount)
+    return render_template("list_all_recordcompanies.html", **context)
+
 #
 # This is an example of a different path.  You can see it at
 #
