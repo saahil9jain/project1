@@ -149,7 +149,7 @@ def list_all_artists():
     cursor = g.conn.execute(LIST_ARTISTS)
     artists = []
     for result in cursor:
-        artists.append("%s: [%s]" % (result[0], result[1]))
+        artists.append("#%s: [%s]" % (result[0], result[1]))
     cursor.close()
 
     cursor = g.conn.execute(COUNT_TRACKS)
@@ -164,7 +164,7 @@ def list_all_albums():
     cursor = g.conn.execute(LIST_ALBUMS)
     albums = []
     for result in cursor:
-        albums.append("%s: [%s], released by [%s] and [%s] on %s" % (result[0], result[1], result[2], result[3], result[4]))
+        albums.append("#%s: [%s], released by [%s] and [%s] on %s" % (result[0], result[1], result[2], result[3], result[4]))
     cursor.close()
 
     cursor = g.conn.execute(COUNT_TRACKS)
@@ -226,7 +226,7 @@ def list_albums_given_artist():
     cursor = g.conn.execute(text(LIST_ALBUMS_GIVEN_ARTIST), artist_id=artist_id)
     albums = []
     for result in cursor:
-        albums.append("%s: [%s], released by [%s] on %s" % (result[0], result[1], result[2], result[3]))
+        albums.append("#%s: [%s], released by [%s] on %s" % (result[0], result[1], result[2], result[3]))
     cursor.close()
 
     context = dict(counter=trackCount, artist_name=artist_name, data=albums)
@@ -246,7 +246,7 @@ def list_tracks_given_album_id():
     cursor = g.conn.execute(text(LIST_TRACKS_GIVEN_ALBUM_ID), album_id=album_id)
     tracks = []
     for result in cursor:
-        tracks.append("Track %s: [%s]" % (result[0], result[1]))
+        tracks.append("Track #%s: [%s]" % (result[0], result[1]))
     cursor.close()
 
     context = dict(counter=trackCount, album_title=album_title, data=tracks)
