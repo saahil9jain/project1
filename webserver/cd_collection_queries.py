@@ -74,7 +74,10 @@ INSERT_NEW_TRACK = (
         "VALUES ((:track_num), (:track_title), (:duration_secs), (:album_id))"
         )
 
-
+INSERT_NEW_RECORDING_CREDIT = (
+        "INSERT INTO records "
+        "VALUES ((:recording_date), (:recording_location), (:role), (:artist_id), (:track_num), (:album_id))"
+        )
 
 
 

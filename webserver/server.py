@@ -346,6 +346,26 @@ def insert_new_track():
     except:
         return redirect('/invalid_action/')
 
+@app.route('/insert_new_recording_credit', methods=['POST'])
+def insert_new_recording_credit():
+
+    recording_date = request.form['recording_date']
+    recording_location = request.form['recording_location']
+    role = request.form['role']
+    artist_id = request.form['artist_id']
+    track_num = request.form['track_num']
+    album_id = request.form['album_id']
+
+    try:
+        g.conn.execute(text(INSERT_NEW_RECORDING_CREDIT),
+                recording_date=recording_date,
+                recording_location=recording_location, role=role,
+                artist_id=artist_id, track_num=track_num, album_id=album_id)
+        return redirect('/')
+    except:
+        return redirect('/invalid_action/')
+
+
 @app.route('/invalid_action/')
 def invalid_action():
     return render_template("invalid_action.html");
