@@ -179,7 +179,7 @@ def list_all_tracks():
     cursor = g.conn.execute(LIST_TRACKS)
     tracks = []
     for result in cursor:
-        tracks.append("\"%s\": track %s on [%s], by [%s]" % (result[0], result[1], result[2], result[3]))
+        tracks.append("-- \"%s\": track %s on [%s]'s album [%s]" % (result[0], result[1], result[2], result[3]))
     cursor.close()
 
     cursor = g.conn.execute(COUNT_TRACKS)

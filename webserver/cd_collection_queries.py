@@ -21,7 +21,7 @@ LIST_ALBUMS = (
         )
 
 LIST_TRACKS = (
-        "SELECT T.track_title, T.track_num, A.album_title, A2.artist_name "
+        "SELECT T.track_title, T.track_num, A2.artist_name, A.album_title "
         "FROM track_contains as T, album_releasedby as A, artist as A2 "
         "WHERE T.album_id=A.album_id AND A.artist_id=A2.artist_id "
         "ORDER BY T.track_title"
