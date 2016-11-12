@@ -299,6 +299,7 @@ def insert_new_recordcompany():
 
     try:
         g.conn.execute(text(INSERT_NEW_RECORDCOMPANY), company_name=company_name)
+        return redirect('/')
     except:
         return redirect('/invalid_action/')
 
@@ -310,6 +311,7 @@ def insert_new_artist():
 
     try:
         g.conn.execute(text(INSERT_NEW_ARTIST), artist_name=artist_name, company_id=company_id)
+        return redirect('/')
     except:
         return redirect('/invalid_action/')
 
@@ -322,7 +324,9 @@ def insert_new_album():
     artist_id = request.form['artist_id']
 
     try:
-        g.conn.execute(text(INSERT_NEW_RECORDCOMPANY), company_name=company_name)
+        g.conn.execute(text(INSERT_NEW_ALBUM),
+                album_title=album_title, release_date=release_date, company_id=company_id, artist_id=artist_id)
+        return redirect('/')
     except:
         return redirect('/invalid_action/')
 

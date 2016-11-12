@@ -42,6 +42,15 @@ body{
             <input type="submit" value="Add">
         </form>
 
+        <form method="POST" action="/insert_new_album">
+            Add new album<br>
+            --new <i>album_title </i><input type="text" name="album_title"><br>
+            --new <i>release_date</i>, if known (<i>YYYY-MM-DD</i>) <input type="text" name="release_date"><br>
+            --existing <i>company_id </i><input type="text" name="company_id"><br>
+            --existing <i>artist_id </i>, the album artist <input type="text" name="artist_id"><br>
+            <input type="submit" value="Add">
+        </form>
+
     </body>
 </html>
 
