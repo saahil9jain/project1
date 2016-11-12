@@ -330,6 +330,22 @@ def insert_new_album():
     except:
         return redirect('/invalid_action/')
 
+@app.route('/insert_new_track', methods=['POST'])
+def insert_new_track():
+
+    track_num = request.form['track_num']
+    track_title = request.form['track_title']
+    duration = request.form['duration']
+    album_id = request.form['album_id']
+
+
+    try:
+        g.conn.execute(text(INSERT_NEW_TRACK),
+                track_num=track_num, track_title=track_title, duration_secs=duration, album_id=album_id)
+        return redirect('/')
+    except:
+        return redirect('/invalid_action/')
+
 @app.route('/invalid_action/')
 def invalid_action():
     return render_template("invalid_action.html");
