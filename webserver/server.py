@@ -110,10 +110,7 @@ def index():
     #print request.args
 
     cursor = g.conn.execute(COUNT_TRACKS)
-    trackCount = []
-    for result in cursor:
-        trackCount.append("%s" % (result[0]))
-    cursor.close()
+    trackCount = (cursor.first()[0])
 
     # Flask uses Jinja templates, which is an extension to HTML where you can
     # pass data to a template and dynamically generate HTML based on the data
@@ -145,60 +142,57 @@ def index():
     # for example, the below file reads template/index.html
     return render_template("index.html", **context)
 
-@app.route('/artist_lookup/')
-def artist_lookup():
+@app.route('/list_all_artists/')
+def list_all_artists():
 
     # list all artists
-    cursor = g.conn.execute(LIST_ARTISTS)
+    cursor = g.conn.execute(LIST_ALL_ARTISTS)
     artists = []
     for result in cursor:
-        artists.append("%s: [%s]" % (result[0], result[1]))
+        artists.append("#%s: [%s]" % (result[0], result[1]))
     cursor.close()
 
     cursor = g.conn.execute(COUNT_TRACKS)
-    trackCount = []
-    for result in cursor:
-        trackCount.append("%s" % (result[0]))
-    cursor.close()
+    trackCount = (cursor.first()[0])
 
     context = dict(data = artists, counter=trackCount)
-    return render_template("artist_lookup.html", **context)
+    return render_template("list_all_artists.html", **context)
 
-@app.route('/album_lookup/')
-def album_lookup():
+@app.route('/list_all_albums/')
+def list_all_albums():
 
-    cursor = g.conn.execute(LIST_ALBUMS)
+    cursor = g.conn.execute(LIST_ALL_ALBUMS)
     albums = []
     for result in cursor:
-        albums.append("%s: [%s], released by [%s] and [%s] on %s" % (result[0], result[1], result[2], result[3], result[4]))
+        albums.append("#%s: [%s], released by [%s] and [%s] on %s" % (result[0], result[1], result[2], result[3], result[4]))
     cursor.close()
 
     cursor = g.conn.execute(COUNT_TRACKS)
-    trackCount = []
-    for result in cursor:
-        trackCount.append("%s" % (result[0]))
-    cursor.close()
+    trackCount = (cursor.first()[0])
 
     context = dict(data = albums, counter=trackCount)
-    return render_template("album_lookup.html", **context)
+    return render_template("list_all_albums.html", **context)
 
-@app.route('/track_lookup/')
-def track_lookup():
+@app.route('/list_all_tracks/')
+def list_all_tracks():
 
-    cursor = g.conn.execute(LIST_TRACKS)
+    cursor = g.conn.execute(LIST_ALL_TRACKS)
     tracks = []
     for result in cursor:
-        tracks.append("\"%s\": track %s on [%s], by [%s]" % (result[0], result[1], result[2], result[3]))
+        #tracks.append("-- \"%s\": track %s on [%s]'s album [%s]" % (result[0], result[1], result[2], result[3]))
+        tracks.append("\"%s\": track %s on [%s]'s album [%s]" % (result[0], result[1], result[2], result[3]))
+        cursor2 = g.conn.execute(text(LIST_CONTRIBUTORS_GIVEN_TRACK), track_num=result[1], album_id=result[4])
+        contributors = []
+        for result2 in cursor2:
+            tracks.append("---Recording credit: [%s], [%s], [%s], [%s]" % (result2[0], result2[1], result2[2], result2[3]))
+        cursor2.close
     cursor.close()
 
     cursor = g.conn.execute(COUNT_TRACKS)
-    trackCount = []
-    for result in cursor:
-        trackCount.append("%s" % (result[0]))
-    cursor.close()
+    trackCount = (cursor.first()[0])
 
     context = dict(data = tracks, counter=trackCount)
-    return render_template("track_lookup.html", **context)
+    return render_template("list_all_tracks.html", **context)
 
 #
 # This is an example of a different path.  You can see it at
@@ -212,7 +206,6 @@ def track_lookup():
 def another():
     return render_template("anotherfile.html")
 
-
 # Example of adding new data to the database
 @app.route('/add', methods=['POST'])
 def add():
@@ -222,6 +215,48 @@ def add():
     g.conn.execute(text(cmd), name1 = name, name2 = name);
     return redirect('/')
 
+@app.route('/list_albums_given_artist', methods=['POST'])
+def list_albums_given_artist():
+
+    artist_id = request.form['artist_id']
+
+    cursor = g.conn.execute(COUNT_TRACKS)
+    trackCount = (cursor.first()[0])
+
+    cursor = g.conn.execute(text(GET_ARTIST_NAME_BY_ARTIST_ID), artist_id=artist_id)
+    artist_name = []
+    for result in cursor:
+        artist_name.append("%s" % (result[0]))
+    cursor.close()
+
+    cursor = g.conn.execute(text(LIST_ALBUMS_GIVEN_ARTIST), artist_id=artist_id)
+    albums = []
+    for result in cursor:
+        albums.append("#%s: [%s], released by [%s] on %s" % (result[0], result[1], result[2], result[3]))
+    cursor.close()
+
+    context = dict(counter=trackCount, artist_name=artist_name, data=albums)
+    return render_template("list_albums_given_artist.html", **context)
+
+@app.route('/list_tracks_given_album_id', methods=['POST'])
+def list_tracks_given_album_id():
+
+    album_id = request.form['album_id']
+
+    cursor = g.conn.execute(COUNT_TRACKS)
+    trackCount = (cursor.first()[0])
+
+    cursor = g.conn.execute(text(GET_ALBUM_NAME_GIVEN_ID), album_id=album_id)
+    album_title = cursor.first()[0]
+
+    cursor = g.conn.execute(text(LIST_TRACKS_GIVEN_ALBUM_ID), album_id=album_id)
+    tracks = []
+    for result in cursor:
+        tracks.append("Track #%s: [%s]" % (result[0], result[1]))
+    cursor.close()
+
+    context = dict(counter=trackCount, album_title=album_title, data=tracks)
+    return render_template("list_tracks_given_album_id.html", **context)
 
 @app.route('/login')
 def login():

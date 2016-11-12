@@ -5,7 +5,6 @@ body{
     font-family: Courier;
 }
     </style>
-
     <body>
         <center>
             <h1>Welcome to Greg and Saahil's CD Collection</h1>
@@ -18,6 +17,24 @@ body{
             <a href="/list_all_albums/">Album</a>
             <a href="/list_all_tracks/">Track</a>
         </center>
+        <br>
+        <b>
+            Albums by
+            {% for n in artist_name %}
+            {{n}}
+            {% endfor %}
+        </b>
+
+        <div>
+            {% for n in data %}
+            <div>{{n}}</div>
+            {% endfor %}
+        </div>
+
+        <form method="POST" action="/list_tracks_given_album_id">
+            <p>View tracks on album (enter album #) <input type="text" name="album_id"> <input type="submit" value="Go"></p>
+        </form>
+
     </body>
 </html>
 
