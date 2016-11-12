@@ -9,22 +9,28 @@ COUNT_TRACKS = (
         "FROM track_contains"
         )
 
-LIST_ARTISTS = (
+LIST_ALL_ARTISTS = (
         "SELECT artist_id, artist_name "
         "FROM artist"
         )
 
-LIST_ALBUMS = (
+LIST_ALL_ALBUMS = (
         "SELECT A.album_id, A.album_title, A2.artist_name, R.company_name, A.release_date "
         "FROM album_releasedby as A, artist as A2, recordcompany as R "
         "WHERE A.company_id=R.company_id AND A.artist_id=A2.artist_id"
         )
 
-LIST_TRACKS = (
-        "SELECT T.track_title, T.track_num, A2.artist_name, A.album_title "
+LIST_ALL_TRACKS = (
+        "SELECT T.track_title, T.track_num, A2.artist_name, A.album_title, A.album_id "
         "FROM track_contains as T, album_releasedby as A, artist as A2 "
         "WHERE T.album_id=A.album_id AND A.artist_id=A2.artist_id "
         "ORDER BY T.track_title"
+        )
+
+LIST_CONTRIBUTORS_GIVEN_TRACK = (
+        "SELECT A.artist_name, R.role, R.recording_location, R.recording_date "
+        "FROM artist as A, records as R "
+        "WHERE R.track_num=(:track_num) AND R.album_id=(:album_id) AND R.artist_id=A.artist_id"
         )
 
 LIST_ALBUMS_GIVEN_ARTIST = (

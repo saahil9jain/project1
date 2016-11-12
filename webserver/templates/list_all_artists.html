@@ -18,8 +18,9 @@ body{
             <a href="/list_all_tracks/">Track</a>
         </center>
         <br>
-        <b>Artists</b>
-
+        <b>Artists</b><br>
+        #<i>artist_id</i>: [<i>artist_name</i>]
+        <br><br>
         <div>
             {% for n in data %}
             <div>{{n}}</div>
@@ -27,7 +28,7 @@ body{
         </div>
 
         <form method="POST" action="/list_albums_given_artist">
-            <p>View albums released by artist (enter artist #) <input type="text" name="artist_id"> <input type="submit" value="Go"></p>
+            <p>View albums released by artist (enter <i>artist_id</i>) <input type="text" name="artist_id"> <input type="submit" value="Go"></p>
         </form>
 
     </body>
