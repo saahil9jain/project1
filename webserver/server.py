@@ -253,6 +253,11 @@ def list_tracks_given_album_id():
     tracks = []
     for result in cursor:
         tracks.append("Track #%s: [%s]" % (result[0], result[1]))
+        cursor2 = g.conn.execute(text(LIST_CONTRIBUTORS_GIVEN_TRACK), track_num=result[0], album_id=album_id)
+        contributors = []
+        for result2 in cursor2:
+            tracks.append("---Recording credit: [%s], [%s], [%s], [%s]" % (result2[0], result2[1], result2[2], result2[3]))
+        cursor2.close
     cursor.close()
 
     context = dict(counter=trackCount, album_title=album_title, data=tracks)
