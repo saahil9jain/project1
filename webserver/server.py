@@ -292,6 +292,27 @@ def list_tracks_given_album_id():
     context = dict(counter=trackCount, album_title=album_title, data=tracks)
     return render_template("list_tracks_given_album_id.html", **context)
 
+@app.route('/insert_new_recordcompany', methods=['POST'])
+def insert_new_recordcompany():
+
+    company_name = request.form['company_name']
+    if len(company_name) == 0:
+        return redirect('/')
+
+    g.conn.execute(text(INSERT_NEW_RECORDCOMPANY), company_name=company_name)
+    return redirect('/')
+
+@app.route('/insert_new_artist', methods=['POST'])
+def insert_new_artist():
+
+    artist_name = request.form['artist_name']
+    company_id = request.form['company_id']
+    if len(artist_name) == 0 or len(company_id) == 0:
+        return redirect('/')
+
+    g.conn.execute(text(INSERT_NEW_ARTIST), artist_name=artist_name, company_id=company_id)
+    return redirect('/')
+
 @app.route('/login')
 def login():
     abort(401)

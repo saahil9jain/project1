@@ -57,3 +57,23 @@ GET_ALBUM_NAME_GIVEN_ID = (
         "WHERE A.album_id=(:album_id)"
         )
 
+INSERT_NEW_RECORDCOMPANY = "INSERT INTO recordcompany VALUES (DEFAULT, :company_name)"
+
+INSERT_NEW_ARTIST = (
+        "INSERT INTO artist VALUES (DEFAULT, (:artist_name)); "
+        "INSERT INTO employs1 VALUES ((:company_id), (SELECT MAX(artist_id) FROM artist))"
+        )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
