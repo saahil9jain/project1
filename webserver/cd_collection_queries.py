@@ -64,7 +64,10 @@ INSERT_NEW_ARTIST = (
         "INSERT INTO employs1 VALUES ((:company_id), (SELECT MAX(artist_id) FROM artist))"
         )
 
-
+INSERT_NEW_ALBUM = (
+        "INSERT INTO album_releasedby "
+        "VALUES (DEFAULT, (:album_title), (:release_date), (:company_id), (:artist_id)) "
+        )
 
 
 
