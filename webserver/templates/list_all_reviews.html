@@ -20,8 +20,8 @@ body{
             <a href="/list_all_reviews/">Reviews</a>
         </center>
         <br>
-        <b>Record Companies</b><br>
-        #<i>company_id</i>: [<i>company_name</i>]j
+        <b>Reviews</b><br>
+        [<i>person_name</i>] gave a score of <i>score</i>/5 to [<i>artist_name</i>]'s album [<i>album_title</i>]
         <br><br>
         TODO: Saahil, please take care of the content below this
         <div>
@@ -29,11 +29,6 @@ body{
             <div>{{n}}</div>
             {% endfor %}
         </div>
-
-        <form method="POST" action="/list_albums_given_artist">
-            <p>View albums released by artist (enter <i>artist_id</i>) <input type="text" name="artist_id"> <input type="submit" value="Go"></p>
-        </form>
-
     </body>
 </html>
 

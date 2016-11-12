@@ -198,7 +198,6 @@ def list_all_tracks():
 def list_all_recordcompanies():
 
     # TODO: SAAHIL JAIN
-    # list all artists
     cursor = g.conn.execute(LIST_ALL_ARTISTS)
     artists = []
     for result in cursor:
@@ -211,14 +210,27 @@ def list_all_recordcompanies():
     context = dict(data = artists, counter=trackCount)
     return render_template("list_all_recordcompanies.html", **context)
 
-#
+@app.route('/list_all_reviews/')
+def list_all_reviews():
+
+    # TODO: SAAHIL JAIN
+    cursor = g.conn.execute(LIST_ALL_ARTISTS)
+    artists = []
+    for result in cursor:
+        artists.append("#%s: [%s]" % (result[0], result[1]))
+    cursor.close()
+
+    cursor = g.conn.execute(COUNT_TRACKS)
+    trackCount = (cursor.first()[0])
+
+    context = dict(data = artists, counter=trackCount)
+    return render_template("list_all_reviews.html", **context)
+
 # This is an example of a different path.  You can see it at
-#
 #     localhost:8111/another
 #
 # notice that the functio name is another() rather than index()
 # the functions for each app.route needs to have different names
-#
 @app.route('/another')
 def another():
     return render_template("anotherfile.html")
