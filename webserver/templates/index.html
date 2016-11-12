@@ -60,6 +60,18 @@ body{
             <input type="submit" value="Add">
         </form>
 
+        <form method="POST" action="/insert_new_recording_credit">
+            Add new recording credit<br>
+            --new <i>role </i><input type="text" name="role"><br>
+            --new <i>recording_date</i>, if known (<i>YYYY-MM-DD</i>) <input type="text" name="recording_date"><br>
+            --new <i>recording_location</i>, if known <input type="text" name="recording_location"><br>
+            --existing <i>track_num </i><input type="text" name="track_num"><br>
+            --existing <i>artist_id</i>, the album artist <input type="text" name="artist_id"><br>
+            --existing <i>album_id </i><input type="text" name="album_id"><br>
+            <input type="submit" value="Add">
+        </form>
+
+
     </body>
 </html>
 
