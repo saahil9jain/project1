@@ -33,14 +33,14 @@ body{
             Add record company<br>
             --new <i>company_name </i><input type="text" name="company_name"><br>
             <input type="submit" value="Add">
-        </form>
+        </form><br>
 
         <form method="POST" action="/insert_new_artist">
             Add new artist<br>
             --new <i>artist_name </i><input type="text" name="artist_name"><br>
             --existing <i>company_id </i><input type="text" name="company_id"><br>
             <input type="submit" value="Add">
-        </form>
+        </form><br>
 
         <form method="POST" action="/insert_new_album">
             Add new album<br>
@@ -49,7 +49,7 @@ body{
             --existing <i>company_id </i><input type="text" name="company_id"><br>
             --existing <i>artist_id</i>, the album artist <input type="text" name="artist_id"><br>
             <input type="submit" value="Add">
-        </form>
+        </form><br>
 
         <form method="POST" action="/insert_new_track">
             Add new track<br>
@@ -58,7 +58,7 @@ body{
             --new <i>duration</i>, if known <input type="text" name="duration"><br>
             --existing <i>album_id </i><input type="text" name="album_id"><br>
             <input type="submit" value="Add">
-        </form>
+        </form><br>
 
         <form method="POST" action="/insert_new_recording_credit">
             Add new recording credit<br>
@@ -69,7 +69,7 @@ body{
             --existing <i>artist_id</i>, the album artist <input type="text" name="artist_id"><br>
             --existing <i>album_id </i><input type="text" name="album_id"><br>
             <input type="submit" value="Add">
-        </form>
+        </form><br>
 
 
     </body>
