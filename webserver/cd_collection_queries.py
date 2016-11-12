@@ -69,7 +69,10 @@ INSERT_NEW_ALBUM = (
         "VALUES (DEFAULT, (:album_title), (:release_date), (:company_id), (:artist_id)) "
         )
 
-
+INSERT_NEW_TRACK = (
+        "INSERT INTO track_contains "
+        "VALUES ((:track_num), (:track_title), (:duration_secs), (:album_id))"
+        )
 
 
 

@@ -47,7 +47,16 @@ body{
             --new <i>album_title </i><input type="text" name="album_title"><br>
             --new <i>release_date</i>, if known (<i>YYYY-MM-DD</i>) <input type="text" name="release_date"><br>
             --existing <i>company_id </i><input type="text" name="company_id"><br>
-            --existing <i>artist_id </i>, the album artist <input type="text" name="artist_id"><br>
+            --existing <i>artist_id</i>, the album artist <input type="text" name="artist_id"><br>
+            <input type="submit" value="Add">
+        </form>
+
+        <form method="POST" action="/insert_new_track">
+            Add new track<br>
+            --new <i>track_num </i><input type="text" name="track_num"><br>
+            --new <i>track_title </i><input type="text" name="track_title"><br>
+            --new <i>duration</i>, if known <input type="text" name="duration"><br>
+            --existing <i>album_id </i><input type="text" name="album_id"><br>
             <input type="submit" value="Add">
         </form>
 
