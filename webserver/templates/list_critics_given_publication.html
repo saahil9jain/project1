@@ -23,18 +23,17 @@ body{
         </center>
         <br>
         <b>
-            Tracks by
-            {% for n in artist_name %}
+            Publication:
+            {% for n in pub_name %}
             {{n}}
             {% endfor %}
-        </b><br>
-        #<i>track_title</i>: track [<i>track_num</i>] in [<i>album_title</i>], [<i>duration_secs</i>] seconds
-        <br><br>
+        </b>
+
         <div>
             {% for n in data %}
             <div>{{n}}</div>
             {% endfor %}
-        </div><br>
+        </div>
 
         <center> 
             <hr>
@@ -129,6 +128,8 @@ body{
             --existing <i>album_id </i><input type="text" name="album_id"><br>
             <input type="submit" value="Add">
         </form><br>
+
+
 
     </body>
 </html>

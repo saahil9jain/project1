@@ -26,6 +26,11 @@ LIST_ALL_FANS = (
         "WHERE F.person_id=P.person_id"
         )
 
+LIST_ALL_PUBLICATIONS = (
+        "SELECT pub_id, pub_name "
+        "FROM publication "
+        )
+
 LIST_ALL_RECORDCOMPANIES = (
         "SELECT company_id, company_name "
         "FROM recordcompany"
@@ -68,6 +73,12 @@ LIST_ARTISTS_GIVEN_COMPANY = (
         "WHERE E.company_id = (:company_id) AND E.artist_id = A.artist_id"
         )
 
+LIST_CRITICS_GIVEN_PUBLICATION = (
+        "SELECT P.person_id, P.person_name "
+        "FROM employs2 AS E, person as P "
+        "WHERE E.pub_id = (:pub_id) AND E.person_id = P.person_id"
+        )
+
 GET_ARTIST_NAME_BY_ARTIST_ID = (
         "SELECT A.artist_name "
         "FROM artist as A "
@@ -90,6 +101,12 @@ GET_COMPANY_NAME_BY_COMPANY_ID = (
         "SELECT C.company_name "
         "FROM recordcompany as C "
         "WHERE C.company_id=(:company_id)"
+        )
+
+GET_PUB_NAME_BY_PUB_ID = (
+        "SELECT P.pub_name "
+        "FROM publication as P "
+        "WHERE P.pub_id=(:pub_id)"
         )
 
 LIST_TRACKS_GIVEN_ALBUM_ID= (
