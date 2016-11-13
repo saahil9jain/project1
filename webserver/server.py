@@ -176,6 +176,22 @@ def list_all_albums():
     context = dict(data = albums, counter=trackCount)
     return render_template("list_all_albums.html", **context)
 
+@app.route('/list_hottest_albums/')
+def list_hottest_albums():
+
+    cursor = g.conn.execute(FIND_HOTTEST_ALBUMS)
+    albums = []
+    for result in cursor:
+        albums.append("#%s: [%s]" % (result[0], result[1]))
+    cursor.close()
+
+    cursor = g.conn.execute(COUNT_TRACKS)
+    trackCount = (cursor.first()[0])
+    cursor.close()
+
+    context = dict(data = albums, counter=trackCount)
+    return render_template("list_hottest_albums.html", **context)
+
 @app.route('/list_all_tracks/')
 def list_all_tracks():
 

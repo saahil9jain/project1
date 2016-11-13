@@ -174,4 +174,10 @@ FIND_LARGEST_COMPANY = (
                                                         "GROUP BY E.company_id ) AS Temp2 ))"
         )
 
+FIND_HOTTEST_ALBUMS = (
+        "SELECT DISTINCT A.album_id, A.album_title "
+        "FROM reviews as R, album_releasedby as A "
+        "WHERE R.album_id = A.album_id AND R.score = 5"
+        "ORDER BY A.album_id ASC"
+        )
 

@@ -22,8 +22,8 @@ body{
             <a href="/list_all_publications/">Publications</a>
         </center>
         <br>
-        <b>Albums</b><br>
-        #<i>album_id</i>: [<i>album_title</i>], released by [<i>artist_name</i>] and [<i>company_name</i>] on <i>date</i>
+        <b>Hottest Albums</b><br>
+        #<i>album_id</i>: [<i>album_title</i>]</i>
         <br><br>
         <div>
             {% for n in data %}
@@ -34,10 +34,6 @@ body{
         <form method="POST" action="/list_tracks_given_album_id">
             <p>View tracks on album (enter <i>album_id</i>) <input type="text" name="album_id"> <input type="submit" value="Go"></p>
         </form>
-
-        <p>
-            Check out the <a href="/list_hottest_albums/">hottest albums</a> (albums with a 5 star review)
-        </p>
 
         <center> 
             <hr>
@@ -137,4 +133,3 @@ body{
 
     </body>
 </html>
-
