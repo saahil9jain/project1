@@ -21,11 +21,13 @@ body{
         </center>
         <br>
         <b>
-            Record Company:
+            Artists employed by
             {% for n in company_name %}
             {{n}}
-            {% endfor %}
+            {% endfor %}<br>
         </b>
+        #<i>artist_id</i>: [<i>artist_name</i>]
+        <br><br>
 
         <div>
             {% for n in data %}
