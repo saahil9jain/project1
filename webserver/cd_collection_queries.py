@@ -56,6 +56,12 @@ GET_ARTIST_NAME_BY_ARTIST_ID = (
         "WHERE A.artist_id=(:artist_id)"
         )
 
+LIST_ALL_REVIEWS = (
+        "SELECT P.person_name, R.score, A.album_title, R.review_date "
+        "FROM person as P, reviews as R, album_releasedby as A "
+        "WHERE R.person_id=P.person_id AND R.album_id=A.album_id"
+        )
+
 GET_COMPANY_NAME_BY_COMPANY_ID = (
         "SELECT C.company_name "
         "FROM recordcompany as C "

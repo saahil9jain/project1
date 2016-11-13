@@ -214,10 +214,10 @@ def list_all_recordcompanies():
 def list_all_reviews():
 
     # TODO: SAAHIL JAIN
-    cursor = g.conn.execute(LIST_ALL_ARTISTS)
+    cursor = g.conn.execute(LIST_ALL_REVIEWS)
     artists = []
     for result in cursor:
-        artists.append("#%s: [%s]" % (result[0], result[1]))
+        artists.append("%s gave a score of %s/5 to %s on %s" % (result[0], result[1], result[2], result[3]))
     cursor.close()
 
     cursor = g.conn.execute(COUNT_TRACKS)
