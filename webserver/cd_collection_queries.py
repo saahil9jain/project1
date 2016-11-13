@@ -79,6 +79,8 @@ INSERT_NEW_RECORDING_CREDIT = (
         "VALUES ((:recording_date), (:recording_location), (:role), (:artist_id), (:track_num), (:album_id))"
         )
 
+INSERT_NEW_ARTIST_RECORDCOMPANY_EMPLOYMENT = "INSERT INTO employs1 VALUES ((:company_id), (:artist_id))"
+
 
 
 

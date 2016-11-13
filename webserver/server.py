@@ -315,6 +315,19 @@ def insert_new_artist():
     except:
         return redirect('/invalid_action/')
 
+@app.route('/insert_new_artist_recordcompany_employment', methods=['POST'])
+def insert_new_artist_recordcompany_employment():
+
+    artist_id = request.form['artist_id']
+    company_id = request.form['company_id']
+
+    try:
+        g.conn.execute(text(INSERT_NEW_ARTIST_RECORDCOMPANY_EMPLOYMENT),
+                artist_id=artist_id, company_id=company_id)
+        return redirect('/')
+    except:
+        return redirect('/invalid_action/')
+
 @app.route('/insert_new_album', methods=['POST'])
 def insert_new_album():
 
