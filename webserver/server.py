@@ -197,7 +197,6 @@ def list_all_tracks():
 @app.route('/list_all_recordcompanies/')
 def list_all_recordcompanies():
 
-    # TODO: SAAHIL JAIN
     cursor = g.conn.execute(LIST_ALL_RECORDCOMPANIES)
     recordcompanies = []
     for result in cursor:
@@ -213,17 +212,22 @@ def list_all_recordcompanies():
 @app.route('/list_all_reviews/')
 def list_all_reviews():
 
-    # TODO: SAAHIL JAIN
-    cursor = g.conn.execute(LIST_ALL_REVIEWS)
-    artists = []
+    cursor = g.conn.execute(LIST_ALL_FAN_REVIEWS)
+    fReviews = []
     for result in cursor:
-        artists.append("%s gave a score of %s/5 to %s on %s" % (result[0], result[1], result[2], result[3]))
+        fReviews.append("%s gave a score of %s/5 to %s on %s" % (result[0], result[1], result[2], result[3]))
+    cursor.close()
+    
+    cursor = g.conn.execute(LIST_ALL_CRITIC_REVIEWS)
+    cReviews = []
+    for result in cursor:
+        cReviews.append("%s gave a score of %s/5 to %s on %s" % (result[0], result[1], result[2], result[3]))
     cursor.close()
 
     cursor = g.conn.execute(COUNT_TRACKS)
     trackCount = (cursor.first()[0])
 
-    context = dict(data = artists, counter=trackCount)
+    context = dict(cData = cReviews, fData = fReviews, counter=trackCount)
     return render_template("list_all_reviews.html", **context)
 
 # This is an example of a different path.  You can see it at

@@ -23,8 +23,18 @@ body{
         <b>Reviews</b><br>
         [<i>person_name</i>] gave a score of [<i>score</i>]/5 to [<i>album_title</i>] on [<i>review_date</i>]
         <br><br>
+
+        <b>Critic Reviews</b><br>
         <div>
-            {% for n in data %}
+            {% for n in cData %}
+            <div>{{n}}</div>
+            {% endfor %}
+        </div>
+        <br><br>
+
+        <b>Fan Reviews</b><br>
+        <div>
+            {% for n in fData %}
             <div>{{n}}</div>
             {% endfor %}
         </div>
