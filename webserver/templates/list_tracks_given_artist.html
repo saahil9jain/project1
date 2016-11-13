@@ -1,0 +1,38 @@
+<html>
+    <style>
+body{ 
+    font-size: 10pt;
+    font-family: Courier;
+}
+    </style>
+    <body>
+        <center>
+            <h1>Welcome to Greg and Saahil's CD Collection</h1>
+            ~~~~Now containing
+            <b>{{ counter }}</b>
+            tracks of music!~~~~<br>
+            <br><hr>
+            Browse by:<br>
+            <a href="/list_all_artists/">Artist</a>
+            <a href="/list_all_albums/">Album</a>
+            <a href="/list_all_tracks/">Track</a>
+            <a href="/list_all_recordcompanies/">Record Companies</a>
+            <a href="/list_all_reviews/">Reviews</a>
+        </center>
+        <br>
+        <b>
+            Tracks by
+            {% for n in artist_name %}
+            {{n}}
+            {% endfor %}
+        </b><br>
+        #<i>track_title</i>: track [<i>track_num</i>] in [<i>album_title</i>], [<i>duration_secs</i>] seconds
+        <br><br>
+        <div>
+            {% for n in data %}
+            <div>{{n}}</div>
+            {% endfor %}
+        </div>
+
+    </body>
+</html>

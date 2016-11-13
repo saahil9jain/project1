@@ -33,6 +33,10 @@ body{
             <p>View albums released by artist (enter <i>artist_id</i>) <input type="text" name="artist_id"> <input type="submit" value="Go"></p>
         </form>
 
+        <form method="POST" action="/list_tracks_given_artist">
+            <p>View tracks recorded by artist (enter <i>artist_id</i>) <input type="text" name="artist_id"> <input type="submit" value="Go"></p>
+        </form>
+
         <center> 
             <hr>
             <b>Contribute a rating to the collection:</b><br>
@@ -126,9 +130,6 @@ body{
             --existing <i>album_id </i><input type="text" name="album_id"><br>
             <input type="submit" value="Add">
         </form><br>
-
-
-
     </body>
 </html>
 
