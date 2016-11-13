@@ -13,7 +13,7 @@ body{
             <b>{{ counter }}</b>
             tracks of music!~~~~<br>
             <br><hr>
-            Browse by:<br>
+            <b>Browse by:</b><br>
             <a href="/list_all_artists/">Artist</a>
             <a href="/list_all_albums/">Album</a>
             <a href="/list_all_tracks/">Track</a>
@@ -22,7 +22,7 @@ body{
 
 
             <br><br><br><br><hr>
-            Contribute a rating to the collection:<br>
+            <b>Contribute a rating to the collection:</b><br>
             (may need to browse for necessary id's first)<br><br>
         </center>
         <form method="POST" action="/insert_new_critic">
@@ -44,14 +44,18 @@ body{
             --new <i>score </i>[<i>0-5</i>] <input type="text" name="score"><br>
             --new <i>review_date (<i>YYYY-MM-DD</i>) </i><input type="text" name="review_date"><br>
             <input type="submit" value="Add">
+        </form><br>
+
+        <form method="POST" action="/insert_new_critic_publication_employment">
+            Add new critic/publication employment<br>
+            --existing <i>critic_id </i><input type="text" name="person_id"><br>
+            --existing <i>pub_id </i><input type="text" name="pub_id"><br>
+            <input type="submit" value="Add">
         </form>
 
-
-
-
-        <br><br><br><br><hr>
+        <br><hr>
         <center>
-            Contribute to the collection:<br>
+            <b>Contribute music to the collection:</b><br>
             (may need to browse for necessary id's first)<br><br>
         </center>
         <form method="POST" action="/insert_new_recordcompany">
