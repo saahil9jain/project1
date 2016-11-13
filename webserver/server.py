@@ -276,11 +276,17 @@ def list_all_users():
         fUsers.append("#%s: [%s]" % (result[0], result[1]))
     cursor.close()
 
+    cursor = g.conn.execute(FIND_ACTIVE_USERS)
+    activeUsers = []
+    for result in cursor:
+        activeUsers.append("%s with %s reviews" % (result[0], result[1]))
+    cursor.close()
+
     cursor = g.conn.execute(COUNT_TRACKS)
     trackCount = (cursor.first()[0])
     cursor.close()
 
-    context = dict(fData = fUsers, cData = cUsers, counter=trackCount)
+    context = dict(fData = fUsers, cData = cUsers, activeUsers = activeUsers, counter=trackCount)
     return render_template("list_all_users.html", **context)
 
 @app.route('/list_all_publications/')

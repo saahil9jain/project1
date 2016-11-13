@@ -181,3 +181,13 @@ FIND_HOTTEST_ALBUMS = (
         "ORDER BY A.album_id ASC"
         )
 
+FIND_ACTIVE_USERS = (
+        "SELECT P.person_name, COUNT(R.person_id) AS ReviewCount "
+        "FROM person as P INNER JOIN reviews as R ON P.person_id = R.person_id "
+        "GROUP BY "
+        "P.person_name "
+        "ORDER BY "
+        "COUNT(R.person_id) DESC "
+        "LIMIT 2"
+        )
+
