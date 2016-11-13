@@ -111,6 +111,7 @@ def index():
 
     cursor = g.conn.execute(COUNT_TRACKS)
     trackCount = (cursor.first()[0])
+    cursor.close()
 
     # Flask uses Jinja templates, which is an extension to HTML where you can
     # pass data to a template and dynamically generate HTML based on the data
@@ -154,6 +155,7 @@ def list_all_artists():
 
     cursor = g.conn.execute(COUNT_TRACKS)
     trackCount = (cursor.first()[0])
+    cursor.close()
 
     context = dict(data = artists, counter=trackCount)
     return render_template("list_all_artists.html", **context)
@@ -169,6 +171,7 @@ def list_all_albums():
 
     cursor = g.conn.execute(COUNT_TRACKS)
     trackCount = (cursor.first()[0])
+    cursor.close()
 
     context = dict(data = albums, counter=trackCount)
     return render_template("list_all_albums.html", **context)
@@ -190,6 +193,7 @@ def list_all_tracks():
 
     cursor = g.conn.execute(COUNT_TRACKS)
     trackCount = (cursor.first()[0])
+    cursor.close()
 
     context = dict(data = tracks, counter=trackCount)
     return render_template("list_all_tracks.html", **context)
@@ -205,6 +209,7 @@ def list_all_recordcompanies():
 
     cursor = g.conn.execute(COUNT_TRACKS)
     trackCount = (cursor.first()[0])
+    cursor.close()
 
     context = dict(data = recordcompanies, counter=trackCount)
     return render_template("list_all_recordcompanies.html", **context)
@@ -226,6 +231,7 @@ def list_all_reviews():
 
     cursor = g.conn.execute(COUNT_TRACKS)
     trackCount = (cursor.first()[0])
+    cursor.close()
 
     context = dict(cData = cReviews, fData = fReviews, counter=trackCount)
     return render_template("list_all_reviews.html", **context)
@@ -255,6 +261,7 @@ def list_albums_given_artist():
 
     cursor = g.conn.execute(COUNT_TRACKS)
     trackCount = (cursor.first()[0])
+    cursor.close()
 
     cursor = g.conn.execute(text(GET_ARTIST_NAME_BY_ARTIST_ID), artist_id=artist_id)
     artist_name = []
@@ -278,6 +285,7 @@ def list_artists_given_recordcompany_id():
 
     cursor = g.conn.execute(COUNT_TRACKS)
     trackCount = (cursor.first()[0])
+    cursor.close()
 
     cursor = g.conn.execute(text(GET_COMPANY_NAME_BY_COMPANY_ID), company_id=company_id)
     company_name = []
@@ -301,6 +309,7 @@ def list_tracks_given_album_id():
 
     cursor = g.conn.execute(COUNT_TRACKS)
     trackCount = (cursor.first()[0])
+    cursor.close()
 
     cursor = g.conn.execute(text(GET_ALBUM_NAME_GIVEN_ID), album_id=album_id)
     album_title = cursor.first()[0]
