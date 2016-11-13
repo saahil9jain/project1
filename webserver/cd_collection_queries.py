@@ -108,6 +108,6 @@ INSERT_NEW_FAN = (
         "INSERT INTO fan VALUES ((SELECT MAX(person_id) FROM person))"
         )
 
-
+INSERT_NEW_REVIEW = "INSERT INTO reviews VALUES ((:person_id), (:album_id), (:score), (:review_date))"
 
 
