@@ -49,12 +49,12 @@ engine = create_engine(DATABASEURI)
 #     .schema <tablename>   -- print CREATE TABLE statement for table
 #
 # The setup code should be deleted once you switch to using the Part 2 postgresql database
-engine.execute("""DROP TABLE IF EXISTS test;""")
-engine.execute("""CREATE TABLE IF NOT EXISTS test (
-  id serial,
-  name text
-);""")
-engine.execute("""INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'), ('ada lovelace');""")
+#engine.execute("""DROP TABLE IF EXISTS test;""")
+#engine.execute("""CREATE TABLE IF NOT EXISTS test (
+#  id serial,
+#  name text
+#);""")
+#engine.execute("""INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'), ('ada lovelace');""")
 # END SQLITE SETUP CODE
 
 @app.before_request
