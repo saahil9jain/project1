@@ -14,6 +14,11 @@ LIST_ALL_ARTISTS = (
         "FROM artist"
         )
 
+LIST_ALL_RECORDCOMPANIES = (
+        "SELECT company_id, company_name "
+        "FROM recordcompany"
+        )
+
 LIST_ALL_ALBUMS = (
         "SELECT A.album_id, A.album_title, A2.artist_name, R.company_name, A.release_date "
         "FROM album_releasedby as A, artist as A2, recordcompany as R "
@@ -39,10 +44,22 @@ LIST_ALBUMS_GIVEN_ARTIST = (
         "WHERE A.artist_id = (:artist_id) AND A.company_id=R.company_id"
         )
 
+LIST_ARTISTS_GIVEN_COMPANY = (
+        "SELECT A.artist_id, A.artist_name "
+        "FROM employs1 AS E, artist as A "
+        "WHERE E.company_id = (:company_id) AND E.artist_id = A.artist_id"
+        )
+
 GET_ARTIST_NAME_BY_ARTIST_ID = (
         "SELECT A.artist_name "
         "FROM artist as A "
         "WHERE A.artist_id=(:artist_id)"
+        )
+
+GET_COMPANY_NAME_BY_COMPANY_ID = (
+        "SELECT C.company_name "
+        "FROM recordcompany as C "
+        "WHERE C.company_id=(:company_id)"
         )
 
 LIST_TRACKS_GIVEN_ALBUM_ID= (

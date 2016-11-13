@@ -198,16 +198,16 @@ def list_all_tracks():
 def list_all_recordcompanies():
 
     # TODO: SAAHIL JAIN
-    cursor = g.conn.execute(LIST_ALL_ARTISTS)
-    artists = []
+    cursor = g.conn.execute(LIST_ALL_RECORDCOMPANIES)
+    recordcompanies = []
     for result in cursor:
-        artists.append("#%s: [%s]" % (result[0], result[1]))
+        recordcompanies.append("#%s: [%s]" % (result[0], result[1]))
     cursor.close()
 
     cursor = g.conn.execute(COUNT_TRACKS)
     trackCount = (cursor.first()[0])
 
-    context = dict(data = artists, counter=trackCount)
+    context = dict(data = recordcompanies, counter=trackCount)
     return render_template("list_all_recordcompanies.html", **context)
 
 @app.route('/list_all_reviews/')
@@ -266,6 +266,29 @@ def list_albums_given_artist():
 
     context = dict(counter=trackCount, artist_name=artist_name, data=albums)
     return render_template("list_albums_given_artist.html", **context)
+
+@app.route('/list_artists_given_recordcompany_id', methods=['POST'])
+def list_artists_given_recordcompany_id():
+
+    company_id = request.form['company_id']
+
+    cursor = g.conn.execute(COUNT_TRACKS)
+    trackCount = (cursor.first()[0])
+
+    cursor = g.conn.execute(text(GET_COMPANY_NAME_BY_COMPANY_ID), company_id=company_id)
+    company_name = []
+    for result in cursor:
+        company_name.append("%s" % (result[0]))
+    cursor.close()
+
+    cursor = g.conn.execute(text(LIST_ARTISTS_GIVEN_COMPANY), company_id=company_id)
+    artists = []
+    for result in cursor:
+        artists.append("#%s: [%s]" % (result[0], result[1]))
+    cursor.close()
+
+    context = dict(counter=trackCount, company_name=company_name, data=artists)
+    return render_template("list_artists_given_recordcompany_id.html", **context)
 
 @app.route('/list_tracks_given_album_id', methods=['POST'])
 def list_tracks_given_album_id():
