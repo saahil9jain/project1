@@ -401,6 +401,42 @@ def insert_new_recording_credit():
     except:
         return redirect('/invalid_action/')
 
+@app.route('/insert_new_critic', methods=['POST'])
+def insert_new_critic():
+
+    critic_name = request.form['critic_name']
+
+    try:
+        g.conn.execute(text(INSERT_NEW_CRITIC), person_name=critic_name)
+        return redirect('/')
+    except:
+        return redirect('/invalid_action/')
+
+@app.route('/insert_new_fan', methods=['POST'])
+def insert_new_fan():
+
+    fan_name = request.form['fan_name']
+
+    try:
+        g.conn.execute(text(INSERT_NEW_FAN), person_name=fan_name)
+        return redirect('/')
+    except:
+        return redirect('/invalid_action/')
+
+@app.route('/insert_new_review', methods=['POST'])
+def insert_new_review():
+
+    person_id = request.form['person_id']
+    album_id = request.form['album_id']
+    score = request.form['score']
+    review_date = request.form['review_date']
+
+    try:
+        g.conn.execute(text(INSERT_NEW_REVIEW), person_id=person_id,
+                album_id=album_id, score=score, review_date=review_date)
+        return redirect('/')
+    except:
+        return redirect('/invalid_action/')
 
 @app.route('/invalid_action/')
 def invalid_action():

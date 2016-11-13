@@ -98,10 +98,16 @@ INSERT_NEW_RECORDING_CREDIT = (
 
 INSERT_NEW_ARTIST_RECORDCOMPANY_EMPLOYMENT = "INSERT INTO employs1 VALUES ((:company_id), (:artist_id))"
 
+INSERT_NEW_CRITIC = (
+        "INSERT INTO person VALUES (DEFAULT, (:person_name)); "
+        "INSERT INTO critic VALUES ((SELECT MAX(person_id) FROM person))"
+        )
 
+INSERT_NEW_FAN = (
+        "INSERT INTO person VALUES (DEFAULT, (:person_name)); "
+        "INSERT INTO fan VALUES ((SELECT MAX(person_id) FROM person))"
+        )
 
-
-
-
+INSERT_NEW_REVIEW = "INSERT INTO reviews VALUES ((:person_id), (:album_id), (:score), (:review_date))"
 
 
