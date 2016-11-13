@@ -21,24 +21,27 @@ body{
             <a href="/list_all_reviews/">Reviews</a>
 
 
-            <br><br><br><br><hr>
+            <br><br><br><br>
+            <hr>
             <b>Contribute a rating to the collection:</b><br>
             (may need to browse for necessary id's first)<br><br>
         </center>
         <form method="POST" action="/insert_new_critic">
-            Create new critic account<br>
+            <b>Create new critic account</b><br>
             --new <i>critic_name </i><input type="text" name="critic_name"><br>
             <input type="submit" value="Add">
         </form><br>
         
         <form method="POST" action="/insert_new_fan">
-            Create new fan account<br>
+            <b>Create new fan account</b>
+            <br>
             --new <i>fan_name </i><input type="text" name="fan_name"><br>
             <input type="submit" value="Add">
         </form><br>
 
         <form method="POST" action="/insert_new_review">
-            Create new review<br>
+            <b>Create new review</b>
+            <br>
             --existing <i>person_id </i><input type="text" name="person_id"><br>
             --existing <i>album_id </i><input type="text" name="album_id"><br>
             --new <i>score </i>[<i>0-5</i>] <input type="text" name="score"><br>
@@ -47,7 +50,8 @@ body{
         </form><br>
 
         <form method="POST" action="/insert_new_critic_publication_employment">
-            Add new critic/publication employment<br>
+            <b>Add new critic/publication employment</b>
+        <br>
             --existing <i>critic_id </i><input type="text" name="person_id"><br>
             --existing <i>pub_id </i><input type="text" name="pub_id"><br>
             <input type="submit" value="Add">
@@ -59,27 +63,30 @@ body{
             (may need to browse for necessary id's first)<br><br>
         </center>
         <form method="POST" action="/insert_new_recordcompany">
-            Add record company<br>
+            <b>Add record company</b>
+            <br>
             --new <i>company_name </i><input type="text" name="company_name"><br>
             <input type="submit" value="Add">
         </form><br>
 
         <form method="POST" action="/insert_new_artist">
-            Add new artist<br>
+            <b>Add new artist</b><br>
             --new <i>artist_name </i><input type="text" name="artist_name"><br>
             --existing <i>company_id </i><input type="text" name="company_id"><br>
             <input type="submit" value="Add">
         </form><br>
 
         <form method="POST" action="/insert_new_artist_recordcompany_employment">
-            Add new artist/record company employment<br>
+            <b>Add new artist/record company employment</b>
+            <br>
             --existing <i>artist_id </i><input type="text" name="artist_id"><br>
             --existing <i>company_id </i><input type="text" name="company_id"><br>
             <input type="submit" value="Add">
         </form><br>
 
         <form method="POST" action="/insert_new_album">
-            Add new album<br>
+            <b>Add new album</b>
+                <br>
             --new <i>album_title </i><input type="text" name="album_title"><br>
             --new <i>release_date</i>, if known (<i>YYYY-MM-DD</i>) <input type="text" name="release_date"><br>
             --existing <i>company_id </i><input type="text" name="company_id"><br>
@@ -88,7 +95,8 @@ body{
         </form><br>
 
         <form method="POST" action="/insert_new_track">
-            Add new track<br>
+            <b>Add new track</b>
+            <br>
             --new <i>track_num </i><input type="text" name="track_num"><br>
             --new <i>track_title </i><input type="text" name="track_title"><br>
             --new <i>duration</i>, if known <input type="text" name="duration"><br>
@@ -97,7 +105,7 @@ body{
         </form><br>
 
         <form method="POST" action="/insert_new_recording_credit">
-            Add new recording credit<br>
+            <b>Add new recording credit</b><br>
             --new <i>role </i><input type="text" name="role"><br>
             --new <i>recording_date</i>, if known (<i>YYYY-MM-DD</i>) <input type="text" name="recording_date"><br>
             --new <i>recording_location</i>, if known <input type="text" name="recording_location"><br>
