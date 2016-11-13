@@ -184,7 +184,11 @@ def list_all_tracks():
     for result in cursor:
         #tracks.append("-- \"%s\": track %s on [%s]'s album [%s]" % (result[0], result[1], result[2], result[3]))
         tracks.append("\"%s\": track %s on [%s]'s album [%s]" % (result[0], result[1], result[2], result[3]))
-        cursor2 = g.conn.execute(text(LIST_CONTRIBUTORS_GIVEN_TRACK), track_num=result[1], album_id=result[4])
+        try:
+            cursor2 = g.conn.execute(text(LIST_CONTRIBUTORS_GIVEN_TRACK), track_num=result[1], album_id=result[4])
+            return redirect('/')
+        except:
+            return redirect('/invalid_action/')
         contributors = []
         for result2 in cursor2:
             tracks.append("---Recording credit: [%s], [%s], [%s], [%s]" % (result2[0], result2[1], result2[2], result2[3]))
@@ -250,9 +254,12 @@ def another():
 def add():
     name = request.form['name']
     print name
-    cmd = 'INSERT INTO test(name) VALUES (:name1), (:name2)';
-    g.conn.execute(text(cmd), name1 = name, name2 = name);
-    return redirect('/')
+    cmd = 'INSERT INTO test(name) VALUES (:name1), (:name2)'
+    try:
+        g.conn.execute(text(cmd), name1 = name, name2 = name)
+        return redirect('/')
+    except:
+        return redirect('/invalid_action/')
 
 @app.route('/list_albums_given_artist', methods=['POST'])
 def list_albums_given_artist():
@@ -263,13 +270,23 @@ def list_albums_given_artist():
     trackCount = (cursor.first()[0])
     cursor.close()
 
-    cursor = g.conn.execute(text(GET_ARTIST_NAME_BY_ARTIST_ID), artist_id=artist_id)
+    try:
+        cursor = g.conn.execute(text(GET_ARTIST_NAME_BY_ARTIST_ID), artist_id=artist_id)
+        return redirect('/')
+    except:
+        return redirect('/invalid_action/')
+
     artist_name = []
     for result in cursor:
         artist_name.append("%s" % (result[0]))
     cursor.close()
 
-    cursor = g.conn.execute(text(LIST_ALBUMS_GIVEN_ARTIST), artist_id=artist_id)
+    try:
+        cursor = g.conn.execute(text(LIST_ALBUMS_GIVEN_ARTIST), artist_id=artist_id)
+        return redirect('/')
+    except:
+        return redirect('/invalid_action/')
+
     albums = []
     for result in cursor:
         albums.append("#%s: [%s], released by [%s] on %s" % (result[0], result[1], result[2], result[3]))
@@ -287,13 +304,23 @@ def list_artists_given_recordcompany_id():
     trackCount = (cursor.first()[0])
     cursor.close()
 
-    cursor = g.conn.execute(text(GET_COMPANY_NAME_BY_COMPANY_ID), company_id=company_id)
+    try:
+        cursor = g.conn.execute(text(GET_COMPANY_NAME_BY_COMPANY_ID), company_id=company_id)
+        return redirect('/')
+    except:
+        return redirect('/invalid_action/')
+
     company_name = []
     for result in cursor:
         company_name.append("%s" % (result[0]))
     cursor.close()
 
-    cursor = g.conn.execute(text(LIST_ARTISTS_GIVEN_COMPANY), company_id=company_id)
+    try:
+        cursor = g.conn.execute(text(LIST_ARTISTS_GIVEN_COMPANY), company_id=company_id)
+        return redirect('/')
+    except:
+        return redirect('/invalid_action/')
+
     artists = []
     for result in cursor:
         artists.append("#%s: [%s]" % (result[0], result[1]))
@@ -311,10 +338,19 @@ def list_tracks_given_album_id():
     trackCount = (cursor.first()[0])
     cursor.close()
 
-    cursor = g.conn.execute(text(GET_ALBUM_NAME_GIVEN_ID), album_id=album_id)
+    try:
+        cursor = g.conn.execute(text(GET_ALBUM_NAME_GIVEN_ID), album_id=album_id)
+        return redirect('/')
+    except:
+        return redirect('/invalid_action/')
     album_title = cursor.first()[0]
 
-    cursor = g.conn.execute(text(LIST_TRACKS_GIVEN_ALBUM_ID), album_id=album_id)
+    try:
+        cursor = g.conn.execute(text(LIST_TRACKS_GIVEN_ALBUM_ID), album_id=album_id)
+        return redirect('/')
+    except:
+        return redirect('/invalid_action/')
+
     tracks = []
     for result in cursor:
         tracks.append("Track #%s: [%s]" % (result[0], result[1]))
