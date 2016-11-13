@@ -2,15 +2,10 @@
 
 """
 Columbia W4111 Intro to databases
-Example webserver
+Web server for CD Collection
 
-To run locally
-    python server.py
-
-Go to http://localhost:8111 in your browser
-
-A debugger such as "pdb" may be helpful for debugging.
-Read about it online.
+Gregory Chen    glc2121@columbia.edu
+Saahil Jain     sj2675@columbia.edu
 """
 
 import os
@@ -22,40 +17,11 @@ from cd_collection_queries import *
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 
-# The following uses the postgresql test.db -- you can use this for debugging purposes
-# However for the project you will need to connect to your Part 2 database in order to use the
-# data
-#
-# XXX: The URI should be in the format of:
-#     postgresql://USER:PASSWORD@<IP_OF_POSTGRE_SQL_SERVER>/postgres
-#
-# For example, if you had username ewu2493, password foobar, then the following line would be:
-#     DATABASEURI = "postgresql://ewu2493:foobar@<IP_OF_POSTGRE_SQL_SERVER>/postgres"
-#
-# Swap out the URI below with the URI for the database created in part 2
-# DATABASEURI = "sqlite:///test.db"
+# URI in the format of: "postgresql://USER:PASSWORD@<IP_OF_POSTGRE_SQL_SERVER>/postgres"
 DATABASEURI = "postgresql://sj2675:huw2z@104.196.175.120/postgres"
 
-# This line creates a database engine that knows how to connect to the URI above
-engine = create_engine(DATABASEURI)
-
-# START SQLITE SETUP CODE
-# after these statements run, you should see a file test.db in your webserver/ directory
-# this is a sqlite database that you can query like psql typing in the shell command line:
-#     sqlite3 test.db
-#
-# The following sqlite3 commands may be useful:
-#     .tables               -- will list the tables in the database
-#     .schema <tablename>   -- print CREATE TABLE statement for table
-#
-# The setup code should be deleted once you switch to using the Part 2 postgresql database
-#engine.execute("""DROP TABLE IF EXISTS test;""")
-#engine.execute("""CREATE TABLE IF NOT EXISTS test (
-#  id serial,
-#  name text
-#);""")
-#engine.execute("""INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'), ('ada lovelace');""")
-# END SQLITE SETUP CODE
+# Create db engine that knows how to connect to the URI above
+engine = create_engine(DATABASEURI) 
 
 @app.before_request
 def before_request():
@@ -86,74 +52,44 @@ def teardown_request(exception):
 
 # @app.route is a decorator around index() that means:
 #   run index() whenever the user tries to access the "/" path using a GET request
-#
 # If you wanted the user to go to e.g., localhost:8111/foobar/ with POST or GET then you could use
 #       @app.route("/foobar/", methods=["POST", "GET"])
-#
 # PROTIP: (the trailing / in the path is important)
-#
 # see for routing: http://flask.pocoo.org/docs/0.10/quickstart/#routing
 # see for decorators: http://simeonfranklin.com/blog/2012/jul/1/python-decorators-in-12-steps/
 @app.route('/')
 def index():
-    """
-    request is a special object that Flask provides to access web request information:
 
-    request.method:   "GET" or "POST"
-    request.form:     if the browser submitted a form, this contains the data in the form
-    request.args:     dictionary of URL arguments e.g., {a:1, b:2} for http://localhost?a=1&b=2
-
-    See its API: http://flask.pocoo.org/docs/0.10/api/#incoming-request-data
-    """
-
-    # DEBUG: this is debugging code to see what request looks like
-    #print request.args
-
-    cursor = g.conn.execute(COUNT_TRACKS)
+    try:
+        cursor = g.conn.execute(COUNT_TRACKS)
+    except:
+        return redirect('/invalid_action/')
     trackCount = (cursor.first()[0])
     cursor.close()
 
-    # Flask uses Jinja templates, which is an extension to HTML where you can
-    # pass data to a template and dynamically generate HTML based on the data
-    # (you can think of it as simple PHP)
-    # documentation: https://realpython.com/blog/python/primer-on-jinja-templating/
-    #
-    # You can see an example template in templates/index.html
-    #
-    # context are the variables that are passed to the template.
-    # for example, "data" key in the context variable defined below will be
-    # accessible as a variable in index.html:
-    #
-    #     # will print: [u'grace hopper', u'alan turing', u'ada lovelace']
-    #     <div>{{data}}</div>
-    #
-    #     # creates a <div> tag for each element in data
-    #     # will print:
-    #     #
-    #     #   <div>grace hopper</div>
-    #     #   <div>alan turing</div>
-    #     #   <div>ada lovelace</div>
-    #     #
-    #     {% for n in data %}
-    #     <div>{{n}}</div>
-    #     {% endfor %}
+    # Jinja documentation: https://realpython.com/blog/python/primer-on-jinja-templating/
     context = dict(counter = trackCount)
 
     # render_template looks in the templates/ folder for files.
-    # for example, the below file reads template/index.html
     return render_template("index.html", **context)
 
 @app.route('/list_all_artists/')
 def list_all_artists():
 
     # list all artists
-    cursor = g.conn.execute(LIST_ALL_ARTISTS)
+    try:
+        cursor = g.conn.execute(LIST_ALL_ARTISTS)
+    except:
+        return redirect('/invalid_action/')
     artists = []
     for result in cursor:
         artists.append("#%s: [%s]" % (result[0], result[1]))
     cursor.close()
 
-    cursor = g.conn.execute(COUNT_TRACKS)
+    try:
+        cursor = g.conn.execute(COUNT_TRACKS)
+    except:
+        return redirect('/invalid_action/')
     trackCount = (cursor.first()[0])
     cursor.close()
 
@@ -163,13 +99,19 @@ def list_all_artists():
 @app.route('/list_all_albums/')
 def list_all_albums():
 
-    cursor = g.conn.execute(LIST_ALL_ALBUMS)
+    try:
+        cursor = g.conn.execute(LIST_ALL_ALBUMS)
+    except:
+        return redirect('/invalid_action/')
     albums = []
     for result in cursor:
         albums.append("#%s: [%s], released by [%s] and [%s] on %s" % (result[0], result[1], result[2], result[3], result[4]))
     cursor.close()
 
-    cursor = g.conn.execute(COUNT_TRACKS)
+    try:
+        cursor = g.conn.execute(COUNT_TRACKS)
+    except:
+        return redirect('/invalid_action/')
     trackCount = (cursor.first()[0])
     cursor.close()
 
@@ -179,13 +121,19 @@ def list_all_albums():
 @app.route('/list_hottest_albums/')
 def list_hottest_albums():
 
-    cursor = g.conn.execute(FIND_HOTTEST_ALBUMS)
+    try:
+        cursor = g.conn.execute(FIND_HOTTEST_ALBUMS)
+    except:
+        return redirect('/invalid_action/')
     albums = []
     for result in cursor:
         albums.append("#%s: [%s]" % (result[0], result[1]))
     cursor.close()
 
-    cursor = g.conn.execute(COUNT_TRACKS)
+    try:
+        cursor = g.conn.execute(COUNT_TRACKS)
+    except:
+        return redirect('/invalid_action/')
     trackCount = (cursor.first()[0])
     cursor.close()
 
@@ -198,7 +146,6 @@ def list_all_tracks():
     cursor = g.conn.execute(LIST_ALL_TRACKS)
     tracks = []
     for result in cursor:
-        #tracks.append("-- \"%s\": track %s on [%s]'s album [%s]" % (result[0], result[1], result[2], result[3]))
         tracks.append("\"%s\": track %s on [%s]'s album [%s]" % (result[0], result[1], result[2], result[3]))
         try:
             cursor2 = g.conn.execute(text(LIST_CONTRIBUTORS_GIVEN_TRACK), track_num=result[1], album_id=result[4])
@@ -210,7 +157,10 @@ def list_all_tracks():
         cursor2.close
     cursor.close()
 
-    cursor = g.conn.execute(COUNT_TRACKS)
+    try:
+        cursor = g.conn.execute(COUNT_TRACKS)
+    except:
+        return redirect('/invalid_action/')
     trackCount = (cursor.first()[0])
     cursor.close()
 
@@ -220,17 +170,26 @@ def list_all_tracks():
 @app.route('/list_all_recordcompanies/')
 def list_all_recordcompanies():
 
-    cursor = g.conn.execute(LIST_ALL_RECORDCOMPANIES)
+    try:
+        cursor = g.conn.execute(LIST_ALL_RECORDCOMPANIES)
+    except:
+        return redirect('/invalid_action/')
     recordcompanies = []
     for result in cursor:
         recordcompanies.append("#%s: [%s]" % (result[0], result[1]))
     cursor.close()
 
-    cursor = g.conn.execute(COUNT_TRACKS)
+    try:
+        cursor = g.conn.execute(COUNT_TRACKS)
+    except:
+        return redirect('/invalid_action/')
     trackCount = (cursor.first()[0])
     cursor.close()
 
-    cursor = g.conn.execute(FIND_LARGEST_COMPANY)
+    try:
+        cursor = g.conn.execute(FIND_LARGEST_COMPANY)
+    except:
+        return redirect('/invalid_action/')
     largestCompany = []
     for result in cursor:
         largestCompany.append("%s" % (result[0]))
@@ -242,19 +201,28 @@ def list_all_recordcompanies():
 @app.route('/list_all_reviews/')
 def list_all_reviews():
 
-    cursor = g.conn.execute(LIST_ALL_FAN_REVIEWS)
+    try:
+        cursor = g.conn.execute(LIST_ALL_FAN_REVIEWS)
+    except:
+        return redirect('/invalid_action/')
     fReviews = []
     for result in cursor:
         fReviews.append("%s gave a score of %s/5 to %s on %s" % (result[0], result[1], result[2], result[3]))
     cursor.close()
-    
-    cursor = g.conn.execute(LIST_ALL_CRITIC_REVIEWS)
+
+    try:
+        cursor = g.conn.execute(LIST_ALL_CRITIC_REVIEWS)
+    except:
+        return redirect('/invalid_action/')
     cReviews = []
     for result in cursor:
         cReviews.append("%s gave a score of %s/5 to %s on %s" % (result[0], result[1], result[2], result[3]))
     cursor.close()
 
-    cursor = g.conn.execute(COUNT_TRACKS)
+    try:
+        cursor = g.conn.execute(COUNT_TRACKS)
+    except:
+        return redirect('/invalid_action/')
     trackCount = (cursor.first()[0])
     cursor.close()
 
@@ -264,25 +232,37 @@ def list_all_reviews():
 @app.route('/list_all_users/')
 def list_all_users():
 
-    cursor = g.conn.execute(LIST_ALL_CRITICS)
+    try:
+        cursor = g.conn.execute(LIST_ALL_CRITICS)
+    except:
+        return redirect('/invalid_action/')
     cUsers = []
     for result in cursor:
         cUsers.append("#%s: [%s]" % (result[0], result[1]))
     cursor.close()
 
-    cursor = g.conn.execute(LIST_ALL_FANS)
+    try:
+        cursor = g.conn.execute(LIST_ALL_FANS)
+    except:
+        return redirect('/invalid_action/')
     fUsers = []
     for result in cursor:
         fUsers.append("#%s: [%s]" % (result[0], result[1]))
     cursor.close()
 
-    cursor = g.conn.execute(FIND_ACTIVE_USERS)
+    try:
+        cursor = g.conn.execute(FIND_ACTIVE_USERS)
+    except:
+        return redirect('/invalid_action/')
     activeUsers = []
     for result in cursor:
         activeUsers.append("%s with %s reviews" % (result[0], result[1]))
     cursor.close()
 
-    cursor = g.conn.execute(COUNT_TRACKS)
+    try:
+        cursor = g.conn.execute(COUNT_TRACKS)
+    except:
+        return redirect('/invalid_action/')
     trackCount = (cursor.first()[0])
     cursor.close()
 
@@ -292,46 +272,34 @@ def list_all_users():
 @app.route('/list_all_publications/')
 def list_all_publications():
 
-    cursor = g.conn.execute(LIST_ALL_PUBLICATIONS)
+    try:
+        cursor = g.conn.execute(LIST_ALL_PUBLICATIONS)
+    except:
+        return redirect('/invalid_action/')
     publications = []
     for result in cursor:
         publications.append("#%s: [%s]" % (result[0], result[1]))
     cursor.close()
 
-    cursor = g.conn.execute(COUNT_TRACKS)
+    try:
+        cursor = g.conn.execute(COUNT_TRACKS)
+    except:
+        return redirect('/invalid_action/')
     trackCount = (cursor.first()[0])
     cursor.close()
 
     context = dict(Data = publications, counter=trackCount)
     return render_template("list_all_publications.html", **context)
 
-# This is an example of a different path.  You can see it at
-#     localhost:8111/another
-#
-# notice that the functio name is another() rather than index()
-# the functions for each app.route needs to have different names
-@app.route('/another')
-def another():
-    return render_template("anotherfile.html")
-
-# Example of adding new data to the database
-@app.route('/add', methods=['POST'])
-def add():
-    name = request.form['name']
-    print name
-    cmd = 'INSERT INTO test(name) VALUES (:name1), (:name2)'
-    try:
-        g.conn.execute(text(cmd), name1 = name, name2 = name)
-        return redirect('/')
-    except:
-        return redirect('/invalid_action/')
-
 @app.route('/list_albums_given_artist', methods=['POST'])
 def list_albums_given_artist():
 
     artist_id = request.form['artist_id']
 
-    cursor = g.conn.execute(COUNT_TRACKS)
+    try:
+        cursor = g.conn.execute(COUNT_TRACKS)
+    except:
+        return redirect('/invalid_action/')
     trackCount = (cursor.first()[0])
     cursor.close()
 
@@ -339,7 +307,6 @@ def list_albums_given_artist():
         cursor = g.conn.execute(text(GET_ARTIST_NAME_BY_ARTIST_ID), artist_id=artist_id)
     except:
         return redirect('/invalid_action/')
-
     artist_name = []
     for result in cursor:
         artist_name.append("%s" % (result[0]))
@@ -349,7 +316,6 @@ def list_albums_given_artist():
         cursor = g.conn.execute(text(LIST_ALBUMS_GIVEN_ARTIST), artist_id=artist_id)
     except:
         return redirect('/invalid_action/')
-
     albums = []
     for result in cursor:
         albums.append("#%s: [%s], released by [%s] on %s" % (result[0], result[1], result[2], result[3]))
@@ -363,7 +329,10 @@ def list_critics_given_publication():
 
     pub_id = request.form['pub_id']
 
-    cursor = g.conn.execute(COUNT_TRACKS)
+    try:
+        cursor = g.conn.execute(COUNT_TRACKS)
+    except:
+        return redirect('/invalid_action/')
     trackCount = (cursor.first()[0])
     cursor.close()
 
@@ -371,7 +340,6 @@ def list_critics_given_publication():
         cursor = g.conn.execute(text(GET_PUB_NAME_BY_PUB_ID), pub_id=pub_id)
     except:
         return redirect('/invalid_action/')
-
     pub_name = []
     for result in cursor:
         pub_name.append("%s" % (result[0]))
@@ -381,7 +349,6 @@ def list_critics_given_publication():
         cursor = g.conn.execute(text(LIST_CRITICS_GIVEN_PUBLICATION), pub_id=pub_id)
     except:
         return redirect('/invalid_action/')
-
     critics = []
     for result in cursor:
         critics.append("#%s: [%s]" % (result[0], result[1]))
@@ -395,17 +362,26 @@ def list_tracks_given_artist():
 
     artist_id = request.form['artist_id']
 
-    cursor = g.conn.execute(COUNT_TRACKS)
+    try:
+        cursor = g.conn.execute(COUNT_TRACKS)
+    except:
+        return redirect('/invalid_action/')
     trackCount = (cursor.first()[0])
     cursor.close()
 
-    cursor = g.conn.execute(text(GET_ARTIST_NAME_BY_ARTIST_ID), artist_id=artist_id)
+    try:
+        cursor = g.conn.execute(text(GET_ARTIST_NAME_BY_ARTIST_ID), artist_id=artist_id)
+    except:
+        return redirect('/invalid_action/')
     artist_name = []
     for result in cursor:
         artist_name.append("%s" % (result[0]))
     cursor.close()
 
-    cursor = g.conn.execute(text(LIST_TRACKS_GIVEN_ARTIST), artist_id=artist_id)
+    try:
+        cursor = g.conn.execute(text(LIST_TRACKS_GIVEN_ARTIST), artist_id=artist_id)
+    except:
+        return redirect('/invalid_action/')
     tracks = []
     for result in cursor:
         tracks.append("#%s: track %s in %s, seconds: %s, recording location: %s, recording date: %s, role: %s" % (result[0], result[1], result[2], result[3], result[4], result[5], result[6]))
@@ -419,7 +395,10 @@ def list_artists_given_recordcompany_id():
 
     company_id = request.form['company_id']
 
-    cursor = g.conn.execute(COUNT_TRACKS)
+    try:
+        cursor = g.conn.execute(COUNT_TRACKS)
+    except:
+        return redirect('/invalid_action/')
     trackCount = (cursor.first()[0])
     cursor.close()
 
@@ -427,7 +406,6 @@ def list_artists_given_recordcompany_id():
         cursor = g.conn.execute(text(GET_COMPANY_NAME_BY_COMPANY_ID), company_id=company_id)
     except:
         return redirect('/invalid_action/')
-
     company_name = []
     for result in cursor:
         company_name.append("%s" % (result[0]))
@@ -437,7 +415,6 @@ def list_artists_given_recordcompany_id():
         cursor = g.conn.execute(text(LIST_ARTISTS_GIVEN_COMPANY), company_id=company_id)
     except:
         return redirect('/invalid_action/')
-
     artists = []
     for result in cursor:
         artists.append("#%s: [%s]" % (result[0], result[1]))
@@ -451,7 +428,10 @@ def list_tracks_given_album_id():
 
     album_id = request.form['album_id']
 
-    cursor = g.conn.execute(COUNT_TRACKS)
+    try:
+        cursor = g.conn.execute(COUNT_TRACKS)
+    except:
+        return redirect('/invalid_action/')
     trackCount = (cursor.first()[0])
     cursor.close()
 
@@ -465,7 +445,6 @@ def list_tracks_given_album_id():
         cursor = g.conn.execute(text(LIST_TRACKS_GIVEN_ALBUM_ID), album_id=album_id)
     except:
         return redirect('/invalid_action/')
-
     tracks = []
     for result in cursor:
         tracks.append("Track #%s: [%s]" % (result[0], result[1]))
@@ -537,7 +516,6 @@ def insert_new_track():
     track_title = request.form['track_title']
     duration = request.form['duration']
     album_id = request.form['album_id']
-
 
     try:
         g.conn.execute(text(INSERT_NEW_TRACK),
@@ -624,11 +602,6 @@ def insert_new_critic_publication_employment():
 @app.route('/invalid_action/')
 def invalid_action():
     return render_template("invalid_action.html");
-
-@app.route('/login')
-def login():
-    abort(401)
-    this_is_never_executed()
 
 
 if __name__ == "__main__":
