@@ -14,6 +14,23 @@ LIST_ALL_ARTISTS = (
         "FROM artist"
         )
 
+LIST_ALL_CRITICS = (
+        "SELECT P.person_id, P.person_name "
+        "FROM critic as C, person as P "
+        "WHERE C.person_id=P.person_id"
+        )
+
+LIST_ALL_FANS = (
+        "SELECT P.person_id, P.person_name "
+        "FROM fan as F, person as P "
+        "WHERE F.person_id=P.person_id"
+        )
+
+LIST_ALL_PUBLICATIONS = (
+        "SELECT pub_id, pub_name "
+        "FROM publication "
+        )
+
 LIST_ALL_RECORDCOMPANIES = (
         "SELECT company_id, company_name "
         "FROM recordcompany"
@@ -45,7 +62,7 @@ LIST_ALBUMS_GIVEN_ARTIST = (
         )
 
 LIST_TRACKS_GIVEN_ARTIST = (
-        "SELECT T.track_title, T.track_num, A.album_title, T.duration_secs "
+        "SELECT T.track_title, T.track_num, A.album_title, T.duration_secs, R.recording_date, R.recording_location, R.role "
         "FROM track_contains AS T, records AS R, album_releasedby AS A "
         "WHERE R.artist_id = (:artist_id) AND T.album_id = R.album_id AND T.track_num = R.track_num AND A.album_id = R.album_id"
         )
@@ -54,6 +71,12 @@ LIST_ARTISTS_GIVEN_COMPANY = (
         "SELECT A.artist_id, A.artist_name "
         "FROM employs1 AS E, artist as A "
         "WHERE E.company_id = (:company_id) AND E.artist_id = A.artist_id"
+        )
+
+LIST_CRITICS_GIVEN_PUBLICATION = (
+        "SELECT P.person_id, P.person_name "
+        "FROM employs2 AS E, person as P "
+        "WHERE E.pub_id = (:pub_id) AND E.person_id = P.person_id"
         )
 
 GET_ARTIST_NAME_BY_ARTIST_ID = (
@@ -78,6 +101,12 @@ GET_COMPANY_NAME_BY_COMPANY_ID = (
         "SELECT C.company_name "
         "FROM recordcompany as C "
         "WHERE C.company_id=(:company_id)"
+        )
+
+GET_PUB_NAME_BY_PUB_ID = (
+        "SELECT P.pub_name "
+        "FROM publication as P "
+        "WHERE P.pub_id=(:pub_id)"
         )
 
 LIST_TRACKS_GIVEN_ALBUM_ID= (
@@ -132,7 +161,33 @@ CHECK_IS_CRITIC = "SELECT * FROM critic AS C WHERE C.person_id=(:person_id)"
 
 INSERT_NEW_CRITIC_PUBLICATION_EMPLOYMENT = "INSERT INTO employs2 VALUES ((:person_id), (:pub_id))"
 
+FIND_LARGEST_COMPANY = (
+        "SELECT co.company_name "
+        "FROM recordcompany as co "
+        "WHERE co.company_id = ( SELECT Temp1.company_id "
+                                "FROM   ( SELECT E.company_id, COUNT(*) AS employeecount "
+                                        "FROM Employs1 as E "
+                                        "GROUP BY E.company_id ) AS Temp1 "
+                                "WHERE  Temp1.employeecount = ( SELECT MAX(Temp2.employeecount) "
+                                                "FROM ( SELECT E.company_id, COUNT(*) AS employeecount "
+                                                        "FROM Employs1 as E "
+                                                        "GROUP BY E.company_id ) AS Temp2 ))"
+        )
 
+FIND_HOTTEST_ALBUMS = (
+        "SELECT DISTINCT A.album_id, A.album_title "
+        "FROM reviews as R, album_releasedby as A "
+        "WHERE R.album_id = A.album_id AND R.score = 5"
+        "ORDER BY A.album_id ASC"
+        )
 
-
+FIND_ACTIVE_USERS = (
+        "SELECT P.person_name, COUNT(R.person_id) AS ReviewCount "
+        "FROM person as P INNER JOIN reviews as R ON P.person_id = R.person_id "
+        "GROUP BY "
+        "P.person_name "
+        "ORDER BY "
+        "COUNT(R.person_id) DESC "
+        "LIMIT 2"
+        )
 

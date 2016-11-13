@@ -18,6 +18,8 @@ body{
             <a href="/list_all_tracks/">Track</a>
             <a href="/list_all_recordcompanies/">Record Companies</a>
             <a href="/list_all_reviews/">Reviews</a>
+            <a href="/list_all_users/">Users</a>
+            <a href="/list_all_publications/">Publications</a>
         </center>
         <br>
         <b>Record Companies</b><br>
@@ -32,6 +34,12 @@ body{
         <form method="POST" action="/list_artists_given_recordcompany_id">
             <p>View artists employed by record companies (enter <i>company_id</i>) <input type="text" name="company_id"> <input type="submit" value="Go"></p>
         </form>
+
+        <p>Fun Fact: The largest record company (with most number of artists) is:         
+            {% for n in largestCompany %}
+            {{n}}
+            {% endfor %}
+        </p>
 
         <center> 
             <hr>

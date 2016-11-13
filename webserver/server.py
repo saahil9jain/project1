@@ -49,12 +49,12 @@ engine = create_engine(DATABASEURI)
 #     .schema <tablename>   -- print CREATE TABLE statement for table
 #
 # The setup code should be deleted once you switch to using the Part 2 postgresql database
-engine.execute("""DROP TABLE IF EXISTS test;""")
-engine.execute("""CREATE TABLE IF NOT EXISTS test (
-  id serial,
-  name text
-);""")
-engine.execute("""INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'), ('ada lovelace');""")
+#engine.execute("""DROP TABLE IF EXISTS test;""")
+#engine.execute("""CREATE TABLE IF NOT EXISTS test (
+#  id serial,
+#  name text
+#);""")
+#engine.execute("""INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'), ('ada lovelace');""")
 # END SQLITE SETUP CODE
 
 @app.before_request
@@ -176,6 +176,22 @@ def list_all_albums():
     context = dict(data = albums, counter=trackCount)
     return render_template("list_all_albums.html", **context)
 
+@app.route('/list_hottest_albums/')
+def list_hottest_albums():
+
+    cursor = g.conn.execute(FIND_HOTTEST_ALBUMS)
+    albums = []
+    for result in cursor:
+        albums.append("#%s: [%s]" % (result[0], result[1]))
+    cursor.close()
+
+    cursor = g.conn.execute(COUNT_TRACKS)
+    trackCount = (cursor.first()[0])
+    cursor.close()
+
+    context = dict(data = albums, counter=trackCount)
+    return render_template("list_hottest_albums.html", **context)
+
 @app.route('/list_all_tracks/')
 def list_all_tracks():
 
@@ -214,7 +230,13 @@ def list_all_recordcompanies():
     trackCount = (cursor.first()[0])
     cursor.close()
 
-    context = dict(data = recordcompanies, counter=trackCount)
+    cursor = g.conn.execute(FIND_LARGEST_COMPANY)
+    largestCompany = []
+    for result in cursor:
+        largestCompany.append("%s" % (result[0]))
+    cursor.close()
+
+    context = dict(data = recordcompanies, counter=trackCount, largestCompany=largestCompany)
     return render_template("list_all_recordcompanies.html", **context)
 
 @app.route('/list_all_reviews/')
@@ -238,6 +260,50 @@ def list_all_reviews():
 
     context = dict(cData = cReviews, fData = fReviews, counter=trackCount)
     return render_template("list_all_reviews.html", **context)
+
+@app.route('/list_all_users/')
+def list_all_users():
+
+    cursor = g.conn.execute(LIST_ALL_CRITICS)
+    cUsers = []
+    for result in cursor:
+        cUsers.append("#%s: [%s]" % (result[0], result[1]))
+    cursor.close()
+
+    cursor = g.conn.execute(LIST_ALL_FANS)
+    fUsers = []
+    for result in cursor:
+        fUsers.append("#%s: [%s]" % (result[0], result[1]))
+    cursor.close()
+
+    cursor = g.conn.execute(FIND_ACTIVE_USERS)
+    activeUsers = []
+    for result in cursor:
+        activeUsers.append("%s with %s reviews" % (result[0], result[1]))
+    cursor.close()
+
+    cursor = g.conn.execute(COUNT_TRACKS)
+    trackCount = (cursor.first()[0])
+    cursor.close()
+
+    context = dict(fData = fUsers, cData = cUsers, activeUsers = activeUsers, counter=trackCount)
+    return render_template("list_all_users.html", **context)
+
+@app.route('/list_all_publications/')
+def list_all_publications():
+
+    cursor = g.conn.execute(LIST_ALL_PUBLICATIONS)
+    publications = []
+    for result in cursor:
+        publications.append("#%s: [%s]" % (result[0], result[1]))
+    cursor.close()
+
+    cursor = g.conn.execute(COUNT_TRACKS)
+    trackCount = (cursor.first()[0])
+    cursor.close()
+
+    context = dict(Data = publications, counter=trackCount)
+    return render_template("list_all_publications.html", **context)
 
 # This is an example of a different path.  You can see it at
 #     localhost:8111/another
@@ -292,6 +358,38 @@ def list_albums_given_artist():
     context = dict(counter=trackCount, artist_name=artist_name, data=albums)
     return render_template("list_albums_given_artist.html", **context)
 
+@app.route('/list_critics_given_publication', methods=['POST'])
+def list_critics_given_publication():
+
+    pub_id = request.form['pub_id']
+
+    cursor = g.conn.execute(COUNT_TRACKS)
+    trackCount = (cursor.first()[0])
+    cursor.close()
+
+    try:
+        cursor = g.conn.execute(text(GET_PUB_NAME_BY_PUB_ID), pub_id=pub_id)
+    except:
+        return redirect('/invalid_action/')
+
+    pub_name = []
+    for result in cursor:
+        pub_name.append("%s" % (result[0]))
+    cursor.close()
+
+    try:
+        cursor = g.conn.execute(text(LIST_CRITICS_GIVEN_PUBLICATION), pub_id=pub_id)
+    except:
+        return redirect('/invalid_action/')
+
+    critics = []
+    for result in cursor:
+        critics.append("#%s: [%s]" % (result[0], result[1]))
+    cursor.close()
+
+    context = dict(counter=trackCount, pub_name=pub_name, data=critics)
+    return render_template("list_critics_given_publication.html", **context)
+
 @app.route('/list_tracks_given_artist', methods=['POST'])
 def list_tracks_given_artist():
 
@@ -310,7 +408,7 @@ def list_tracks_given_artist():
     cursor = g.conn.execute(text(LIST_TRACKS_GIVEN_ARTIST), artist_id=artist_id)
     tracks = []
     for result in cursor:
-        tracks.append("#%s: track %s in %s, %s secs" % (result[0], result[1], result[2], result[3]))
+        tracks.append("#%s: track %s in %s, seconds: %s, recording location: %s, recording date: %s, role: %s" % (result[0], result[1], result[2], result[3], result[4], result[5], result[6]))
     cursor.close()
 
     context = dict(counter=trackCount, artist_name=artist_name, data=tracks)
