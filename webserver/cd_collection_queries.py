@@ -62,7 +62,7 @@ LIST_ALBUMS_GIVEN_ARTIST = (
         )
 
 LIST_TRACKS_GIVEN_ARTIST = (
-        "SELECT T.track_title, T.track_num, A.album_title, T.duration_secs "
+        "SELECT T.track_title, T.track_num, A.album_title, T.duration_secs, R.recording_date, R.recording_location, R.role "
         "FROM track_contains AS T, records AS R, album_releasedby AS A "
         "WHERE R.artist_id = (:artist_id) AND T.album_id = R.album_id AND T.track_num = R.track_num AND A.album_id = R.album_id"
         )

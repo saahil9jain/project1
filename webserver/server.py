@@ -380,7 +380,7 @@ def list_tracks_given_artist():
     cursor = g.conn.execute(text(LIST_TRACKS_GIVEN_ARTIST), artist_id=artist_id)
     tracks = []
     for result in cursor:
-        tracks.append("#%s: track %s in %s, %s secs" % (result[0], result[1], result[2], result[3]))
+        tracks.append("#%s: track %s in %s, seconds: %s, recording location: %s, recording date: %s, role: %s" % (result[0], result[1], result[2], result[3], result[4], result[5], result[6]))
     cursor.close()
 
     context = dict(counter=trackCount, artist_name=artist_name, data=tracks)
