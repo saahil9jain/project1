@@ -44,6 +44,12 @@ LIST_ALBUMS_GIVEN_ARTIST = (
         "WHERE A.artist_id = (:artist_id) AND A.company_id=R.company_id"
         )
 
+LIST_TRACKS_GIVEN_ARTIST = (
+        "SELECT T.track_title, T.track_num, A.album_title, T.duration_secs "
+        "FROM track_contains AS T, records AS R, album_releasedby AS A "
+        "WHERE R.artist_id = (:artist_id) AND T.album_id = R.album_id AND T.track_num = R.track_num AND A.album_id = R.album_id"
+        )
+
 LIST_ARTISTS_GIVEN_COMPANY = (
         "SELECT A.artist_id, A.artist_name "
         "FROM employs1 AS E, artist as A "
