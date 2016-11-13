@@ -493,7 +493,10 @@ def insert_new_critic_publication_employment():
     critic_id = request.form['person_id']
     pub_id = request.form['pub_id']
 
-    if g.conn.execute(text(CHECK_IS_CRITIC), person_id=critic_id).rowcount == 0:
+    try: 
+        if g.conn.execute(text(CHECK_IS_CRITIC), person_id=critic_id).rowcount == 0:
+            return redirect('/invalid_action/')
+    except:
         return redirect('/invalid_action/')
 
     try:
