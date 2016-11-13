@@ -239,6 +239,28 @@ def list_all_reviews():
     context = dict(cData = cReviews, fData = fReviews, counter=trackCount)
     return render_template("list_all_reviews.html", **context)
 
+@app.route('/list_all_users/')
+def list_all_users():
+
+    cursor = g.conn.execute(LIST_ALL_CRITICS)
+    cUsers = []
+    for result in cursor:
+        cUsers.append("#%s: [%s]" % (result[0], result[1]))
+    cursor.close()
+
+    cursor = g.conn.execute(LIST_ALL_FANS)
+    fUsers = []
+    for result in cursor:
+        fUsers.append("#%s: [%s]" % (result[0], result[1]))
+    cursor.close()
+
+    cursor = g.conn.execute(COUNT_TRACKS)
+    trackCount = (cursor.first()[0])
+    cursor.close()
+
+    context = dict(fData = fUsers, cData = cUsers, counter=trackCount)
+    return render_template("list_all_users.html", **context)
+
 # This is an example of a different path.  You can see it at
 #     localhost:8111/another
 #

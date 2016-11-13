@@ -14,6 +14,18 @@ LIST_ALL_ARTISTS = (
         "FROM artist"
         )
 
+LIST_ALL_CRITICS = (
+        "SELECT P.person_id, P.person_name "
+        "FROM critic as C, person as P "
+        "WHERE C.person_id=P.person_id"
+        )
+
+LIST_ALL_FANS = (
+        "SELECT P.person_id, P.person_name "
+        "FROM fan as F, person as P "
+        "WHERE F.person_id=P.person_id"
+        )
+
 LIST_ALL_RECORDCOMPANIES = (
         "SELECT company_id, company_name "
         "FROM recordcompany"

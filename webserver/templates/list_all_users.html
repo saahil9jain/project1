@@ -5,7 +5,6 @@ body{
     font-family: Courier;
 }
     </style>
-
     <body>
         <center>
             <h1>Welcome to Greg and Saahil's CD Collection</h1>
@@ -13,15 +12,37 @@ body{
             <b>{{ counter }}</b>
             tracks of music!~~~~<br>
             <br><hr>
-            <b>Browse by:</b><br>
+            Browse by:<br>
             <a href="/list_all_artists/">Artist</a>
             <a href="/list_all_albums/">Album</a>
             <a href="/list_all_tracks/">Track</a>
             <a href="/list_all_recordcompanies/">Record Companies</a>
             <a href="/list_all_reviews/">Reviews</a>
-            <a href="/list_all_users/">Users</a>
+        </center>
+        <br>
+        <b>Users</b><br>
+        #<i>person_id</i>: [<i>person_name</i>]
+        <br><br>
+        <b>Critics</b><br>
+        <div>
+            {% for n in cData %}
+            <div>{{n}}</div>
+            {% endfor %}
+        </div>
+        <br><br>
 
-            <br><br><br><br>
+        <b>Fans</b><br>
+        <div>
+            {% for n in fData %}
+            <div>{{n}}</div>
+            {% endfor %}
+        </div>
+
+        <form method="POST" action="/list_albums_given_artist">
+            <p>View albums released by artist (enter <i>artist_id</i>) <input type="text" name="artist_id"> <input type="submit" value="Go"></p>
+        </form>
+
+        <center> 
             <hr>
             <b>Contribute a rating to the collection:</b><br>
             (may need to browse for necessary id's first)<br><br>
@@ -114,8 +135,5 @@ body{
             --existing <i>album_id </i><input type="text" name="album_id"><br>
             <input type="submit" value="Add">
         </form><br>
-
-
     </body>
 </html>
-
