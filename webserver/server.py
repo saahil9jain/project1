@@ -451,6 +451,22 @@ def insert_new_review():
     except:
         return redirect('/invalid_action/')
 
+@app.route('/insert_new_critic_publication_employment', methods=['POST'])
+def insert_new_critic_publication_employment():
+
+    critic_id = request.form['person_id']
+    pub_id = request.form['pub_id']
+
+    if g.conn.execute(text(CHECK_IS_CRITIC), person_id=critic_id).rowcount == 0:
+        return redirect('/invalid_action/')
+
+    try:
+        g.conn.execute(text(INSERT_NEW_CRITIC_PUBLICATION_EMPLOYMENT),
+                person_id=critic_id, pub_id=pub_id)
+        return redirect('/')
+    except:
+        return redirect('/invalid_action/')
+
 @app.route('/invalid_action/')
 def invalid_action():
     return render_template("invalid_action.html");
