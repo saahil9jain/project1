@@ -214,7 +214,13 @@ def list_all_recordcompanies():
     trackCount = (cursor.first()[0])
     cursor.close()
 
-    context = dict(data = recordcompanies, counter=trackCount)
+    cursor = g.conn.execute(FIND_LARGEST_COMPANY)
+    largestCompany = []
+    for result in cursor:
+        largestCompany.append("%s" % (result[0]))
+    cursor.close()
+
+    context = dict(data = recordcompanies, counter=trackCount, largestCompany=largestCompany)
     return render_template("list_all_recordcompanies.html", **context)
 
 @app.route('/list_all_reviews/')

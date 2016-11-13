@@ -161,7 +161,17 @@ CHECK_IS_CRITIC = "SELECT * FROM critic AS C WHERE C.person_id=(:person_id)"
 
 INSERT_NEW_CRITIC_PUBLICATION_EMPLOYMENT = "INSERT INTO employs2 VALUES ((:person_id), (:pub_id))"
 
-
-
+FIND_LARGEST_COMPANY = (
+        "SELECT co.company_name "
+        "FROM recordcompany as co "
+        "WHERE co.company_id = ( SELECT Temp1.company_id "
+                                "FROM   ( SELECT E.company_id, COUNT(*) AS employeecount "
+                                        "FROM Employs1 as E "
+                                        "GROUP BY E.company_id ) AS Temp1 "
+                                "WHERE  Temp1.employeecount = ( SELECT MAX(Temp2.employeecount) "
+                                                "FROM ( SELECT E.company_id, COUNT(*) AS employeecount "
+                                                        "FROM Employs1 as E "
+                                                        "GROUP BY E.company_id ) AS Temp2 ))"
+        )
 
 

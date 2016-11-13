@@ -35,6 +35,12 @@ body{
             <p>View artists employed by record companies (enter <i>company_id</i>) <input type="text" name="company_id"> <input type="submit" value="Go"></p>
         </form>
 
+        <p>Fun Fact: The largest record company (with most number of artists) is:         
+            {% for n in largestCompany %}
+            {{n}}
+            {% endfor %}
+        </p>
+
         <center> 
             <hr>
             <b>Contribute a rating to the collection:</b><br>
