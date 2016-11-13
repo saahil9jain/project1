@@ -186,7 +186,6 @@ def list_all_tracks():
         tracks.append("\"%s\": track %s on [%s]'s album [%s]" % (result[0], result[1], result[2], result[3]))
         try:
             cursor2 = g.conn.execute(text(LIST_CONTRIBUTORS_GIVEN_TRACK), track_num=result[1], album_id=result[4])
-            return redirect('/')
         except:
             return redirect('/invalid_action/')
         contributors = []
@@ -272,7 +271,6 @@ def list_albums_given_artist():
 
     try:
         cursor = g.conn.execute(text(GET_ARTIST_NAME_BY_ARTIST_ID), artist_id=artist_id)
-        return redirect('/')
     except:
         return redirect('/invalid_action/')
 
@@ -283,7 +281,6 @@ def list_albums_given_artist():
 
     try:
         cursor = g.conn.execute(text(LIST_ALBUMS_GIVEN_ARTIST), artist_id=artist_id)
-        return redirect('/')
     except:
         return redirect('/invalid_action/')
 
@@ -306,7 +303,6 @@ def list_artists_given_recordcompany_id():
 
     try:
         cursor = g.conn.execute(text(GET_COMPANY_NAME_BY_COMPANY_ID), company_id=company_id)
-        return redirect('/')
     except:
         return redirect('/invalid_action/')
 
@@ -317,7 +313,6 @@ def list_artists_given_recordcompany_id():
 
     try:
         cursor = g.conn.execute(text(LIST_ARTISTS_GIVEN_COMPANY), company_id=company_id)
-        return redirect('/')
     except:
         return redirect('/invalid_action/')
 
@@ -340,14 +335,12 @@ def list_tracks_given_album_id():
 
     try:
         cursor = g.conn.execute(text(GET_ALBUM_NAME_GIVEN_ID), album_id=album_id)
-        return redirect('/')
     except:
         return redirect('/invalid_action/')
     album_title = cursor.first()[0]
 
     try:
         cursor = g.conn.execute(text(LIST_TRACKS_GIVEN_ALBUM_ID), album_id=album_id)
-        return redirect('/')
     except:
         return redirect('/invalid_action/')
 
