@@ -580,6 +580,21 @@ def insert_new_review():
     except:
         return redirect('/invalid_action/')
 
+@app.route('/update_review', methods=['POST'])
+def update_review():
+
+    person_id = request.form['person_id']
+    album_id = request.form['album_id']
+    score = request.form['score']
+    review_date = request.form['review_date']
+
+    try:
+        g.conn.execute(text(UPDATE_REVIEW), person_id=person_id,
+                album_id=album_id, score=score, review_date=review_date)
+        return redirect('/')
+    except:
+        return redirect('/invalid_action/')
+
 @app.route('/insert_new_critic_publication_employment', methods=['POST'])
 def insert_new_critic_publication_employment():
 

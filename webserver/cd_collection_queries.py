@@ -157,6 +157,12 @@ INSERT_NEW_FAN = (
 
 INSERT_NEW_REVIEW = "INSERT INTO reviews VALUES ((:person_id), (:album_id), (:score), (:review_date))"
 
+UPDATE_REVIEW = (
+        "UPDATE reviews " 
+        "SET score=(:score), review_date=(:review_date) "
+        "WHERE person_id=(:person_id) AND album_id=(:album_id)"
+        )
+
 CHECK_IS_CRITIC = "SELECT * FROM critic AS C WHERE C.person_id=(:person_id)"
 
 INSERT_NEW_CRITIC_PUBLICATION_EMPLOYMENT = "INSERT INTO employs2 VALUES ((:person_id), (:pub_id))"
