@@ -1,4 +1,4 @@
-We built a web application to allow users to search our Jazz music database hosted on Google Cloud
+We built a web application to allow users to search our Jazz music database hosted on Google Cloud.
 
 Team: Saahil Jain, Gregory Chen
 
