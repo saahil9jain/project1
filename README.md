@@ -1,3 +1,5 @@
+# Team: Gregory Chen, Saahil Jain
+# We built a web application to allow users to search our Jazz music database hosted on Google Cloud.
 # Overview of Project 1
 
 In Project 1, you will build a substantial real-world database application of your choice. 
